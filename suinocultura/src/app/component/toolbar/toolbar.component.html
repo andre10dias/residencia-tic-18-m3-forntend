@@ -1,0 +1,12 @@
+<mat-toolbar color="primary">
+    <button mat-icon-button class="example-icon" [matMenuTriggerFor]="menu" aria-label="Example icon-button with menu icon">
+      <mat-icon>menu</mat-icon>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="rotaHome()">Início</button>
+        <button mat-menu-item (click)="rotaSuino()">Cadastrar suinos</button>
+        <button mat-menu-item (click)="rotaPeso()">Cadastrar pesos</button>
+        <button mat-menu-item (click)="sair()">Sair</button>
+      </mat-menu>
+    </button>
+    <span>Suinocultura</span>
+</mat-toolbar>

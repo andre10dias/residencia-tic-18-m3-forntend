@@ -1,0 +1,63 @@
+#peso-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 60px 446px;
+    padding: 10px;
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.5); 
+    z-index: 999; 
+}
+
+.header {
+    display: flex;
+    grid-row-start: 1;
+    grid-row-end: 2;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.content {
+    display: grid;
+    grid-template-rows: 220px 2000px;
+    row-gap: 10px;
+    grid-row-start: 2;
+    grid-row-end: 4;
+}
+
+.row-1 {
+    grid-row-start: 1;
+    grid-row-end: 2;
+}
+
+.row-2 {
+    grid-row-start: 2;
+}
+
+.btn-cadastrar {
+    text-align: right;
+}
+
+button {
+    margin-bottom: 10px;
+    color: #ffff !important;
+    background-color: #3f51b5;
+    height: 40px;
+}
+
+.button-container {
+    margin-left: auto;
+}

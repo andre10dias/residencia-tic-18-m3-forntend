@@ -1,0 +1,75 @@
+<div class="dialog-header">
+    <div class="dialog-close">
+      <button mat-button mat-dialog-close>X</button>
+    </div>
+    <div class="dialog-title">
+      <h2>{{title}}</h2>
+    </div>
+  </div>
+  <div class="dialog-conteiner">
+    <mat-dialog-content>
+        <form [formGroup]="pesoForm" #pesoFormRef="ngForm" (ngSubmit)="onSubmit()">
+            <input type="hidden" name="id" formControlName="id">
+        
+            <div class="row-1">
+                <div class="form-group">
+                    <mat-label>Brinco do animal</mat-label>
+                    <div id="brinco-animal">
+                        <mat-select formControlName="brincoAnimal" placeholder="Selecione..."
+                            [ngClass]="{'invalid-field': pesoForm.get('brincoAnimal')?.invalid 
+                                && pesoForm.get('brincoAnimal')?.touched}"
+                        >
+                            <mat-option value="">Selecione...</mat-option>
+                            @for (brincoAnimal of brincoAnimalList; track brincoAnimal) {
+                                <mat-option [value]="brincoAnimal">{{brincoAnimal}}</mat-option>
+                            }
+                        </mat-select>
+                        <div>
+                            <mat-error *ngIf="!pesoForm.get('brincoAnimal')?.valid && pesoForm.get('brincoAnimal')?.touched"
+                            >Campo obrigatório.</mat-error>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="row-2">
+                <div class="form-group">
+                    <mat-label>Data da pesagem</mat-label>
+                    <div>
+                        <input matInput type="date" formControlName="dataPeso"
+                            [ngClass]="{'invalid-field': pesoForm.get('dataPeso')?.invalid && pesoForm.get('dataPeso')?.touched}"
+                        >
+                        <div id="data-peso">
+                            <mat-error *ngIf="!pesoForm.get('dataPeso')?.valid && pesoForm.get('dataPeso')?.touched"
+                            >Campo obrigatório.</mat-error>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="form-group">
+                    <mat-label>Peso</mat-label>
+                    <div id="peso">
+                        <input matInput formControlName="peso" mask="000.00" [placeholder]="'000.00'"
+                            [ngClass]="{'invalid-field': pesoForm.get('peso')?.invalid && pesoForm.get('peso')?.touched}"
+                        > Kg
+                        <div>
+                            <mat-error *ngIf="!pesoForm.get('peso')?.valid
+                                && pesoForm.get('peso')?.touched && pesoForm.get('peso')?.hasError('required')"
+                            >Campo obrigatório.</mat-error>
+                            <!-- <mat-error *ngIf="!pesoForm.get('peso')?.valid
+                                && pesoForm.get('peso')?.touched && pesoForm.get('peso')?.hasError('numeric')"
+                            >Somente números.</mat-error> -->
+                        </div>
+                    </div>
+                </div>    
+            </div>
+        </form>
+    </mat-dialog-content>
+    <hr>
+    <mat-dialog-actions>
+    <button type="submit" mat-button color="primary" 
+        (click)="pesoFormRef.ngSubmit.emit()"  [mat-dialog-close]="true"
+    >{{btnText}}</button>
+    <button mat-button [mat-dialog-close]="false">Cancelar</button>
+    </mat-dialog-actions>
+</div>
