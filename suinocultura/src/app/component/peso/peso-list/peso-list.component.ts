@@ -104,7 +104,7 @@ export class PesoListComponent {
       data: { 
         element: element, 
         action: ActionEnum.EDIT, 
-        title: 'Editar Peso', 
+        title: 'Editar peso', 
         txtButton: 'Editar' 
       }
     });

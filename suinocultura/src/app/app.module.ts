@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { ReactiveFormsModule } from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -20,7 +21,7 @@ import { ToolbarComponent } from './component/toolbar/toolbar.component';
 import { FooterComponent } from './component/footer/footer.component';
 import { HomeComponent } from './component/home/home.component';
 import { LoginComponent } from './component/login/login.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { SessaoModule } from './component/sessao/sessao.module';
 
 
 @NgModule({
@@ -44,7 +45,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatSnackBarModule,
     DialogModule,
     SuinoModule,
-    PesoModule
+    PesoModule,
+    SessaoModule
   ],
   providers: [
     provideAnimationsAsync()

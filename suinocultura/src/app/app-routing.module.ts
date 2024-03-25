@@ -9,9 +9,9 @@ import { SuinoGuard } from './guard/suino.guard';
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
   { path: 'login', component: LoginComponent },
-  { path: 'home', component: HomeComponent, canActivate: [SuinoGuard]  },
-  { path: 'suino', component: SuinoComponent, canActivate: [SuinoGuard]  },
-  { path: 'peso', component: PesoComponent, canActivate: [SuinoGuard]  },
+  // { path: 'home', component: HomeComponent, canActivate: [SuinoGuard]  },
+  // { path: 'suino', component: SuinoComponent, canActivate: [SuinoGuard]  },
+  // { path: 'peso', component: PesoComponent, canActivate: [SuinoGuard]  },
 ];
 
 @NgModule({

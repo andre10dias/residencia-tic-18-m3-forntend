@@ -9,7 +9,6 @@ import { FirebaseCredentials } from '../model/firebase/firebase-credentials';
 import { PesoCreateDTO } from '../model/peso/peso-create.dto';
 import { PesoEditDTO } from '../model/peso/peso-edit.dto';
 import { Suino } from '../model/suino/suino';
-import { PesoChartDTO } from '../model/peso/peso-chart.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -111,6 +110,18 @@ export class PesoService {
         return listaSuino;
       })
     );
+  }
+
+  getSuinoByBrinco(brinco: number): Suino | any {
+    this.getSuinoAll().subscribe((listaSuinos: Suino[]) => {
+      listaSuinos.forEach((suino: any) => {
+        if (suino.brincoAnimal === brinco) {
+          return suino;
+        }
+      })
+
+      return {} as Suino;
+    });
   }
 
   getPesoByBrincoAnimal(brincoAnimal: number): Observable<Peso[]> {

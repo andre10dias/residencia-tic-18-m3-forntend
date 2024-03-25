@@ -21,6 +21,8 @@ export class SuinoFormComponent implements OnInit {
   action = ActionEnum.CREATE;
   dadosItemSelecionado: SuinoFormDTO = {} as SuinoFormDTO;
 
+  numeroBrincoExistente = false;
+
   constructor(
     private snackBar: MatSnackBar,
     private service: SuinoService,
@@ -50,7 +52,7 @@ export class SuinoFormComponent implements OnInit {
         Validators.required, 
         Validators.pattern(/^\d+$/),
         this.brincoRequired,
-        this.brincoNumeric, 
+        this.brincoNumeric
       ]),
       'dataNascimento': new FormControl(null, [
         Validators.required
@@ -92,6 +94,17 @@ export class SuinoFormComponent implements OnInit {
 
     return null;
   }
+
+  brincoUnico(control: FormControl): { [key: string]: boolean } | null {
+    const valor = control.value;
+    console.log('brincoUnico: ', valor);
+
+    if (valor && !this.service.isBrincoUnico(valor)) {
+      return { 'brincoUnico': true };
+    }
+    
+    return null;
+  }
   
 
   get statusList(): any[] {
@@ -102,7 +115,19 @@ export class SuinoFormComponent implements OnInit {
     return this.service.sexo;
   }
 
+  onInputBlur(): void {
+    this.service.isBrincoUnico(this.suinoForm.value.brincoAnimal).subscribe(numeroBrincoExistente => {
+      this.numeroBrincoExistente = !numeroBrincoExistente;
+  });
+  }
+
   onSubmit(): void {
+    if (this.numeroBrincoExistente) {
+      this.openSnackBar('O número do brinco informado já existe.');
+      this.numeroBrincoExistente = false;
+      return;
+    }
+
     if (this.suinoForm.invalid) {
       this.openSnackBar('Por favor, preencha o formulário corretamente.');
       return;

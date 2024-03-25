@@ -52,7 +52,7 @@ export class SuinoListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.service.novoSuinoObservable.subscribe({
+    this.service.novoSuinoObservable$.subscribe({
       next: (suino: SuinoListDTO) => {
         this.dataSource.data.push(suino);
         this.dataSource._updateChangeSubscription();
@@ -89,8 +89,8 @@ export class SuinoListComponent implements OnInit {
 
   carregardadosList(): void {
     this.service.getAll().subscribe({
-      next: suimos => {
-        this.listaSuinos = this.converter.toListSuinoListDTOs(suimos);
+      next: suinos => {
+        this.listaSuinos = this.converter.toListSuinoListDTOs(suinos);
         this.atualizarDadosLista(this.listaSuinos);
       },
       error: error => {
@@ -124,6 +124,15 @@ export class SuinoListComponent implements OnInit {
   atualizarDadosLista(lista: SuinoListDTO[]): void {
     this.spinnerOn();
     this.listaSuinos = lista;
+
+    // this.listaSuinos.sort((a: any, b: any) => {
+    //   const dateA = new Date(a.createdAt);
+    //   const dateB = new Date(b.createdAt);
+    //   return dateB.getTime() - dateA.getTime();
+    // });
+
+    // console.log(this.listaSuinos);
+
     this.dataSource = new MatTableDataSource<SuinoListDTO>(this.listaSuinos);
     this.sortedData = this.listaSuinos.slice();
 
@@ -150,7 +159,7 @@ export class SuinoListComponent implements OnInit {
       data: { 
         element: element, 
         action: ActionEnum.EDIT, 
-        title: 'Editar Suíno', 
+        title: 'Editar suíno', 
         txtButton: 'Editar' 
       }
     });

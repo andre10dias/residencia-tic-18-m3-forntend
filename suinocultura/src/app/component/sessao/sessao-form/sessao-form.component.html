@@ -1,0 +1,105 @@
+<div class="dialog-header">
+    <div class="dialog-close">
+      <button mat-button mat-dialog-close>X</button>
+    </div>
+    <div class="dialog-title">
+      <h2>{{title}}</h2>
+    </div>
+  </div>
+  <div class="dialog-conteiner">
+      <mat-dialog-content>
+        <form [formGroup]="sessaoForm" #sessaoFormRef="ngForm" (ngSubmit)="onSubmit()">
+            <input type="hidden" name="id" formControlName="id">
+        
+            <div class="row-1">
+                <div class="form-group">
+                    <mat-label>Descrição</mat-label>
+                    <div id="descricao">
+                        <input matInput formControlName="descricao" maxlength="80" 
+                            [ngClass]="{'invalid-field': sessaoForm.get('descricao')?.invalid && sessaoForm.get('descricao')?.touched}"
+                        >
+                        <div>
+                            <mat-error *ngIf="!sessaoForm.get('descricao')?.valid 
+                                && sessaoForm.get('descricao')?.touched && sessaoForm.get('descricao')?.hasError('required')"
+                            >Campo obrigatório.</mat-error>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row-2">
+                <div class="form-group">
+                    <mat-label>Data</mat-label>
+                    <div>
+                        <input matInput type="date" formControlName="dataSessao"
+                            [ngClass]="{'invalid-field': sessaoForm.get('dataSessao')?.invalid && sessaoForm.get('dataSessao')?.touched}"
+                        >
+                        <div id="data-sessao">
+                            <mat-error *ngIf="!sessaoForm.get('dataSessao')?.valid && sessaoForm.get('dataSessao')?.touched"
+                            >Campo obrigatório.</mat-error>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <mat-label>Brinco do animal</mat-label>
+                    <div id="suinos">
+                        <mat-select formControlName="suinosId" placeholder="Selecione..." multiple
+                            [ngClass]="{'invalid-field': sessaoForm.get('suinosId')?.invalid 
+                                && sessaoForm.get('suinosId')?.touched}"
+                        >
+                            <!-- <mat-option value="">Selecione...</mat-option> -->
+                            @for (suino of suinosList; track suino) {
+                                <mat-option [value]="suino.id">{{suino.brincoAnimal}}</mat-option>
+                            }
+                        </mat-select>
+                        <div>
+                            <mat-error *ngIf="!sessaoForm.get('suinosId')?.valid && sessaoForm.get('suinosId')?.touched"
+                            >Campo obrigatório.</mat-error>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row-3">
+                <div class="form-group">
+                    <mat-label>Atividades</mat-label>
+                    <div id="atividades">
+                        <mat-select formControlName="atividadesId" placeholder="Selecione..." multiple
+                            [ngClass]="{'invalid-field': sessaoForm.get('atividadesId')?.invalid 
+                                && sessaoForm.get('atividadesId')?.touched}"
+                        >
+                            <!-- <mat-option value="">Selecione...</mat-option> -->
+                            @for (atividade of atividadesList; track atividade) {
+                                <mat-option [value]="atividade.id">{{atividade.nome}}</mat-option>
+                            }
+                            <!-- <mat-option *ngFor="let atividade of atividadesList" [value]="atividade.nome">
+                                {{atividade.nome}}
+                            </mat-option> -->
+                        </mat-select>
+                        <div>
+                            <mat-error *ngIf="!sessaoForm.get('atividadesId')?.valid && sessaoForm.get('atividadesId')?.touched"
+                            >Campo obrigatório.</mat-error>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        
+      </mat-dialog-content>
+      <hr>
+      <mat-dialog-actions>
+        <button type="submit" mat-button color="primary" *ngIf="!numeroBrincoExistente; else elseBlock"
+            (click)="sessaoFormRef.ngSubmit.emit()"  [mat-dialog-close]="true"
+        >{{btnText}}</button>
+
+        <ng-template #elseBlock>
+            <button type="submit" mat-button color="primary" 
+                    (click)="sessaoFormRef.ngSubmit.emit()">
+                {{btnText}}
+            </button>
+        </ng-template>
+
+        <button mat-button [mat-dialog-close]="false">Cancelar</button>
+      </mat-dialog-actions>
+</div>

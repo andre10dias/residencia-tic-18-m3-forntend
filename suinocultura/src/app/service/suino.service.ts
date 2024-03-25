@@ -66,7 +66,7 @@ export class SuinoService {
     return this._resetSubject.asObservable();
   }
 
-  get novoSuinoObservable() {
+  get novoSuinoObservable$() {
     return this.novoSuinoSubject.asObservable();
   }
 
@@ -98,6 +98,21 @@ export class SuinoService {
       })
     );
   }
+
+  getSuinoByBrinco(brinco: number): Observable<Suino> {
+    return this.getAll().pipe(
+        map((listaSuinos: any) => {
+            const suinoEncontrado = listaSuinos.find((suino: any) => suino.brincoAnimal === brinco);
+            return suinoEncontrado !== undefined ? suinoEncontrado : undefined; 
+        })
+    );
+  }
+
+isBrincoUnico(brinco: number): Observable<boolean> {
+  return this.getSuinoByBrinco(brinco).pipe(
+      map(suino => suino === undefined)
+  );
+}
 
   save(form: any) {
     let [anoNasc, mesNasc, diaNasc] = form.dataNascimento.split('-');

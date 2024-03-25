@@ -15,7 +15,7 @@
                 <div class="form-group">
                     <mat-label>Brinco animal</mat-label>
                     <div id="brinco-animal">
-                        <input matInput formControlName="brincoAnimal" maxlength="3"
+                        <input matInput formControlName="brincoAnimal" maxlength="3" (blur)="onInputBlur()"
                             [ngClass]="{'invalid-field': suinoForm.get('brincoAnimal')?.invalid && suinoForm.get('brincoAnimal')?.touched}"
                         >
                         <div>
@@ -134,9 +134,17 @@
       </mat-dialog-content>
       <hr>
       <mat-dialog-actions>
-        <button type="submit" mat-button color="primary" 
+        <button type="submit" mat-button color="primary" *ngIf="!numeroBrincoExistente; else elseBlock"
             (click)="suinoFormRef.ngSubmit.emit()"  [mat-dialog-close]="true"
         >{{btnText}}</button>
+
+        <ng-template #elseBlock>
+            <button type="submit" mat-button color="primary" 
+                    (click)="suinoFormRef.ngSubmit.emit()">
+                {{btnText}}
+            </button>
+        </ng-template>
+
         <button mat-button [mat-dialog-close]="false">Cancelar</button>
       </mat-dialog-actions>
 </div>
