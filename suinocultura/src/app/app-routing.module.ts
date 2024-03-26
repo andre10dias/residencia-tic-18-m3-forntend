@@ -5,13 +5,15 @@ import { PesoComponent } from './component/peso/peso.component';
 import { HomeComponent } from './component/home/home.component';
 import { LoginComponent } from './component/login/login.component';
 import { SuinoGuard } from './guard/suino.guard';
+import { SessaoComponent } from './component/sessao/sessao.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
   { path: 'login', component: LoginComponent },
-  // { path: 'home', component: HomeComponent, canActivate: [SuinoGuard]  },
-  // { path: 'suino', component: SuinoComponent, canActivate: [SuinoGuard]  },
-  // { path: 'peso', component: PesoComponent, canActivate: [SuinoGuard]  },
+  { path: 'home', component: HomeComponent, canActivate: [SuinoGuard] },
+  { path: 'suino', component: SuinoComponent, canActivate: [SuinoGuard] },
+  { path: 'peso', component: PesoComponent, canActivate: [SuinoGuard] },
+  { path: 'sessao', component: SessaoComponent, canActivate: [SuinoGuard] },
 ];
 
 @NgModule({

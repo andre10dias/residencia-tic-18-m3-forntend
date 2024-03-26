@@ -43,7 +43,7 @@ export class SessaoHistoricoComponent {
         this.carregarHistorico(data, suinos);
         console.log('[sessao-historico.component] this.historico: ', this.historico);
 
-        this.descricao = `Sessão: ${this.historico.descricaoSessao} - Data: ${this.historico.dataSessao}`;
+        this.descricao = `${this.historico.descricaoSessao} - ${this.historico.dataSessao}`;
 
         const allAtividades = this.historico.suinosHistorico
             .flatMap(suino => suino.atividadesHistorico.map(atividade => atividade.nomeAtividade));
