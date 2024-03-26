@@ -26,12 +26,14 @@ import { AppRoutingModule } from '../../app-routing.module';
 import { SessaoComponent } from './sessao.component';
 import { SessaoListComponent } from './sessao-list/sessao-list.component';
 import { SessaoFormComponent } from './sessao-form/sessao-form.component';
+import { SessaoHistoricoComponent } from './sessao-historico/sessao-historico.component';
 
 @NgModule({
   declarations: [
     SessaoComponent,
     SessaoListComponent,
-    SessaoFormComponent
+    SessaoFormComponent,
+    SessaoHistoricoComponent
   ],
   imports: [
     CommonModule,

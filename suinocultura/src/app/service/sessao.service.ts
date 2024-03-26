@@ -199,47 +199,6 @@ export class SessaoService {
             }
         });
     });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // let edit: SessaoEditDTO = {
-    //   id: form.id,
-    //   dataSessao: form.dataSessao,
-    //   descricao: form.descricao,
-    //   suinos: form.suinos,
-    //   atividades: form.atividades,
-    //   createdAt: form.createAt,
-    //   updatedAt: new Date()
-    // }
-
-    // this.http.put(`${this.baseUrl}/${form.id}.json`, edit).subscribe({
-    //   next: (data: any) => {
-    //     console.log('[sessao.service] edit', data);
-    //     this._sessaoAtualizada = {
-    //       id: data.id,
-    //       descricao: form.descricao,
-    //       dataSessao: this.util.formatarData(new Date(edit.dataSessao), 'dd/MM/yyyy'),
-    //       suinos: form.suinos,
-    //       atividades: form.atividades,
-    //       createdAt: this.util.formatarData(new Date(edit.createdAt), 'dd/MM/yyyy')
-    //     };
-    //   },
-    //   error: (error: any) => {
-    //     console.log('error: ', error)
-    //   }
-    // });
   }
 
   delete(id: string) {

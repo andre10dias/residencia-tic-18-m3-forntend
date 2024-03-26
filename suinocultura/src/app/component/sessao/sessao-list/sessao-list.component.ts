@@ -15,6 +15,8 @@ import { SessaoFormComponent } from '../sessao-form/sessao-form.component';
 import { Suino } from '../../../model/suino/suino';
 import { Atividade } from '../../../model/sessao/atividade';
 import { DialogComponent } from '../../dialog/dialog.component';
+import { Sessao } from '../../../model/sessao/sessao';
+import { SessaoHistoricoComponent } from '../sessao-historico/sessao-historico.component';
 
 @Component({
   selector: 'app-sessao-list',
@@ -196,6 +198,27 @@ export class SessaoListComponent implements OnInit {
         this.spinnerOn();
         this.removeItem(element);
         this.spinnerOff();
+      }
+    });
+  }
+
+  openHistoricoDialog(element?: Sessao): void {
+    const dialogRef = this.dialog.open(SessaoHistoricoComponent, {
+      width: '800px',
+      disableClose: true,
+      data: element
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+      }
+    });
+  }
+
+  historicoItem(id: string): void {
+    this.service.getSessaoById(id).subscribe(sessao => {
+      if (sessao) {
+        this.openHistoricoDialog(sessao);
       }
     });
   }

@@ -108,11 +108,11 @@ export class SuinoService {
     );
   }
 
-isBrincoUnico(brinco: number): Observable<boolean> {
-  return this.getSuinoByBrinco(brinco).pipe(
-      map(suino => suino === undefined)
-  );
-}
+  isBrincoUnico(brinco: number): Observable<boolean> {
+    return this.getSuinoByBrinco(brinco).pipe(
+        map(suino => suino === undefined)
+    );
+  }
 
   save(form: any) {
     let [anoNasc, mesNasc, diaNasc] = form.dataNascimento.split('-');
