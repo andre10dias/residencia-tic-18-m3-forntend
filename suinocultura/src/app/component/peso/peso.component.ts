@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { SuinoService } from '../../service/suino.service';
 import { MatDialog } from '@angular/material/dialog';
-import { ActionEnum } from '../../enum/action-enum';
+import { ActionEnum } from '../../enum/action.enum';
 import { PesoFormComponent } from './peso-form/peso-form.component';
 import { PesoService } from '../../service/peso.service';
 

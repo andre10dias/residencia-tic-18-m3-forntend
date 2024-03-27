@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { forkJoin } from 'rxjs';
 
-import { ActionEnum } from '../../../enum/action-enum';
+import { ActionEnum } from '../../../enum/action.enum';
 import { SessaoFormDTO } from '../../../model/sessao/sessao-form.dto';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -64,10 +64,6 @@ export class SessaoFormComponent {
         this.service.getListaSuinos(this.dadosItemSelecionado.suinosId),
         this.service.getListaAtividades(this.dadosItemSelecionado.atividadesId)
       ]).subscribe(([suinosData, atividadesData]) => {
-        console.log('[SessaoFormComponent]  ngOnInit suinos:', suinosData);
-        console.log('[SessaoFormComponent]  ngOnInit atividades:', atividadesData);
-        console.log('[SessaoFormComponent]  ngOnInit dadosItemSelecionado:', this.dadosItemSelecionado);
-  
         this.suinosList = suinosData;
         this.atividadesList = atividadesData;
   
@@ -79,24 +75,19 @@ export class SessaoFormComponent {
   
         this.sessaoForm.get('suinosId')?.setValue(this.dadosItemSelecionado.suinosId);
         this.sessaoForm.get('atividadesId')?.setValue(this.dadosItemSelecionado.atividadesId);
-  
-        console.log('[SessaoFormComponent]  ngOnInit sessaoForm:', this.sessaoForm.value);
       });
     }
 
     this.service.listaSuinos.subscribe(listaSuinos => {
-      console.log('[SessaoFormComponent]  ngOnInit listaSuinos:', listaSuinos);
       this.suinosList = listaSuinos;
     });
 
     this.service.listaAtividades.subscribe(listaAtividades => {
-      console.log('[SessaoFormComponent]  ngOnInit listaAtividades:', listaAtividades);
       this.atividadesList = listaAtividades;
     });
   }
 
   onSubmit(): void {
-    console.log('[SessaoFormComponent] OnSubmit: ', this.sessaoForm.value);
     if (this.sessaoForm.invalid) {
       this.openSnackBar('Por favor, preencha o formulário corretamente.');
       return;

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { PesoService } from '../../../service/peso.service';
 import { PesoChartDTO } from '../../../model/peso/peso-chart.dto';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';

@@ -41,7 +41,6 @@ export class SessaoHistoricoComponent {
     suinoService.getAll().subscribe({
       next: (suinos) => {
         this.carregarHistorico(data, suinos);
-        console.log('[sessao-historico.component] this.historico: ', this.historico);
 
         this.descricao = `${this.historico.descricaoSessao} - ${this.historico.dataSessao}`;
 
@@ -50,7 +49,6 @@ export class SessaoHistoricoComponent {
         this.displayedColumns.push(...new Set(allAtividades));
 
         this.dataSource = new MatTableDataSource<any>(this.carregarDataSource());
-        console.log('[sessao-historico.component] this.dataSource: ', this.dataSource);
 
         this.spinnerOff();
       },

@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { SuinoService } from '../../service/suino.service';
 import { SuinoFormComponent } from './suino-form/suino-form.component';
-import { ActionEnum } from '../../enum/action-enum';
+import { ActionEnum } from '../../enum/action.enum';
 
 @Component({
   selector: 'app-suino',

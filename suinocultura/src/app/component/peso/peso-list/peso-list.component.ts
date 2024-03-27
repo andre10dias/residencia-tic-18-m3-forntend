@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { SnackbarConfigEnum } from '../../../enum/snackbar-config.enum';
 import { PesoFormDTO } from '../../../model/peso/peso-form.dto';
-import { ActionEnum } from '../../../enum/action-enum';
+import { ActionEnum } from '../../../enum/action.enum';
 import { PesoFormComponent } from '../peso-form/peso-form.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { PesoListDTO } from '../../../model/peso/peso-list.dto';
@@ -92,7 +92,7 @@ export class PesoListComponent {
       if (label) {
         label.innerHTML = 'Itens por página:';
       }
-    }, 500);
+    }, 1000);
 
     this.spinnerOff();
   }

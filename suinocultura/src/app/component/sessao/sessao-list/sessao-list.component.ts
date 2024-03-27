@@ -1,22 +1,26 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
-import { SessaoListDTO } from '../../../model/sessao/sessao-list.dto';
 import { MatTableDataSource } from '@angular/material/table';
-import { SessaoService } from '../../../service/sessao.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
-import { SessaoConverter } from '../../../model/sessao/sessao.converter';
+
+import { SessaoService } from '../../../service/sessao.service';
 import { SuinoUtil } from '../../../util/suino.util';
+
 import { SnackbarConfigEnum } from '../../../enum/snackbar-config.enum';
-import { SessaoFormDTO } from '../../../model/sessao/sessao-form.dto';
-import { ActionEnum } from '../../../enum/action-enum';
+import { ActionEnum } from '../../../enum/action.enum';
+
 import { SessaoFormComponent } from '../sessao-form/sessao-form.component';
-import { Suino } from '../../../model/suino/suino';
-import { Atividade } from '../../../model/sessao/atividade';
-import { DialogComponent } from '../../dialog/dialog.component';
-import { Sessao } from '../../../model/sessao/sessao';
 import { SessaoHistoricoComponent } from '../sessao-historico/sessao-historico.component';
+import { DialogComponent } from '../../dialog/dialog.component';
+
+import { SessaoConverter } from '../../../model/sessao/sessao.converter';
+import { SessaoListDTO } from '../../../model/sessao/sessao-list.dto';
+import { SessaoFormDTO } from '../../../model/sessao/sessao-form.dto';
+import { Sessao } from '../../../model/sessao/sessao';
+import { DialogConfigEnum } from '../../../enum/dialog-config.enum';
 
 @Component({
   selector: 'app-sessao-list',
@@ -77,7 +81,6 @@ export class SessaoListComponent implements OnInit {
 
   editItem(id: string): void {
     this.service.getSessaoById(id).subscribe(sessao => {
-      console.log('[sessao-list] editItem: ', sessao)
       if (sessao) {
         // let suinos = Array.isArray(sessao.suinos) ? sessao.suinos : [sessao.suinos];
         // let atividades = Array.isArray(sessao.atividades) ? sessao.atividades : [sessao.atividades];
@@ -87,7 +90,6 @@ export class SessaoListComponent implements OnInit {
         sessao.atividades = Array.from(new Set(sessao.atividades));
 
         let sessaoFormDTO: SessaoFormDTO = this.converter.toSessaoFormDTO(sessao);
-        console.log('[sessao-list] editItem sessaoFormDTO: ', sessaoFormDTO)
         this.openDialog(sessaoFormDTO);
       }
     });
@@ -111,7 +113,7 @@ export class SessaoListComponent implements OnInit {
       if (label) {
         label.innerHTML = 'Itens por página:';
       }
-    }, 500);
+    }, 1000);
 
     this.spinnerOff();
   }
@@ -139,7 +141,6 @@ export class SessaoListComponent implements OnInit {
   }
 
   openDialog(element?: SessaoFormDTO): void {
-    console.log('[sessao-list] openDialog: ', element)
     const dialogRef = this.dialog.open(SessaoFormComponent, {
       width: '600px',
       disableClose: true,
@@ -158,11 +159,11 @@ export class SessaoListComponent implements OnInit {
 
         if (index !== -1) {
           setTimeout(() => {
-            let peso = this.service.sessaoAtualizada;
-            this.dataSource.data[index] = peso;
+            let sessao = this.service.sessaoAtualizada;
+            this.dataSource.data[index] = sessao;
             this.dataSource._updateChangeSubscription();
             this.dadosCarregados = true;
-          }, 1000);
+          }, DialogConfigEnum.DURATION);
         }
 
         this.spinnerOff();

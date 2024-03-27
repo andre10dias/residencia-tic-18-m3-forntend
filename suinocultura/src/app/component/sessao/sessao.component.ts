@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
-import { SessaoFormComponent } from './sessao-form/sessao-form.component';
-import { SuinoService } from '../../service/suino.service';
+
 import { MatDialog } from '@angular/material/dialog';
-import { ActionEnum } from '../../enum/action-enum';
+
 import { SessaoService } from '../../service/sessao.service';
+
+import { ActionEnum } from '../../enum/action.enum';
+
+import { SessaoFormComponent } from './sessao-form/sessao-form.component';
 
 @Component({
   selector: 'app-sessao',

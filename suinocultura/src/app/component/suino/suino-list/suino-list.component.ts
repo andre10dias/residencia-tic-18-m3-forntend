@@ -14,8 +14,9 @@ import { SuinoListDTO } from '../../../model/suino/suino-list.dto';
 import { DialogComponent } from '../../dialog/dialog.component';
 import { SuinoFormDTO } from '../../../model/suino/suino-form.dto';
 import { SuinoFormComponent } from '../suino-form/suino-form.component';
-import { ActionEnum } from '../../../enum/action-enum';
+import { ActionEnum } from '../../../enum/action.enum';
 import { SnackbarConfigEnum } from '../../../enum/snackbar-config.enum';
+import { DialogConfigEnum } from '../../../enum/dialog-config.enum';
 
 @Component({
   selector: 'app-suino-list',
@@ -147,7 +148,7 @@ export class SuinoListComponent implements OnInit {
       if (label) {
         label.innerHTML = 'Itens por página:';
       }
-    }, 500);
+    }, 1000);
 
     this.spinnerOff();
   }
@@ -175,7 +176,7 @@ export class SuinoListComponent implements OnInit {
             this.dataSource.data[index] = suino;
             this.dataSource._updateChangeSubscription();
             this.dadosCarregados = true;
-          }, 1000);
+          }, DialogConfigEnum.DURATION);
         }
 
         this.spinnerOff();

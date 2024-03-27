@@ -1,13 +1,16 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { SnackbarConfigEnum } from '../../../enum/snackbar-config.enum';
-import { PesoService } from '../../../service/peso.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActionEnum } from '../../../enum/action-enum';
-import { PesoFormDTO } from '../../../model/peso/peso-form.dto';
-import { SuinoUtil } from '../../../util/suino.util';
-import { SuinoFormComponent } from '../../suino/suino-form/suino-form.component';
+
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
+import { PesoService } from '../../../service/peso.service';
+import { SuinoUtil } from '../../../util/suino.util';
+
+import { SnackbarConfigEnum } from '../../../enum/snackbar-config.enum';
+import { ActionEnum } from '../../../enum/action.enum';
+
+import { PesoFormDTO } from '../../../model/peso/peso-form.dto';
 
 @Component({
   selector: 'app-peso-form',

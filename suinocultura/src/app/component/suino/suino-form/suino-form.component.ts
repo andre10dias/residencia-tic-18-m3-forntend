@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SuinoService } from '../../../service/suino.service';
 import { SuinoFormDTO } from '../../../model/suino/suino-form.dto';
-import { ActionEnum } from '../../../enum/action-enum';
+import { ActionEnum } from '../../../enum/action.enum';
 import { SnackbarConfigEnum } from '../../../enum/snackbar-config.enum';
 
 @Component({
