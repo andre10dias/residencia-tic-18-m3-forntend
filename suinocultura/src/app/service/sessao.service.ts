@@ -69,13 +69,21 @@ export class SessaoService {
     return this.http.get<Sessao>(`${this.baseUrl}/${id}.json`).pipe(
       map((data: any) => {
         data.id = id;
-        console.log('[sessao.service] getSessaoById: ', data);
         return data as Sessao;
       })
     );
   }
 
   getSuinoById(id: string): Observable<Suino> {
+    if (id === typeof 'string') {
+      console.log('É string');
+      console.log('[sessao.service] getSuinoById: ', id);
+    }
+    else {
+      console.log('Não é string');
+      console.log('[sessao.service] getSuinoById: ', id, typeof id);
+    }
+
     return this.http.get<Suino>(`${this.baseUrlSuino}/${id}.json`).pipe(
       map((data: any) => {
         data.id = id;
@@ -94,15 +102,20 @@ export class SessaoService {
   }
 
   getListaSuinos(suinosId: string[]): Observable<Suino[]> {
-    console.log('[sessao.service] getListaSuinos: ', suinosId);
+    console.log('[sessao.service - getListaSuinos]  Chamando getSuinoById: ', suinosId);
     const observables = suinosId.map(id => this.getSuinoById(id));
     return forkJoin(observables);
   }
 
   getListaAtividades(atividadesId: string[]): Observable<Atividade[]> {
-    console.log('[sessao.service] getListaAtividades: ', atividadesId);
     const observables = atividadesId.map(id => this.getAtividadeById(id));
     return forkJoin(observables);
+  }
+
+  getSessoesBySuinoId(suinoId: string): Observable<Sessao[]> {
+    return this.getAll().pipe(
+      map(sessoes => sessoes.filter(sessao => sessao.suinos.some(suino => suino.id === suinoId)))
+    );
   }
 
   save(form: any) {
@@ -119,9 +132,6 @@ export class SessaoService {
         suinos = suinosData;
         atividades = atividadesData;
 
-        console.log('[sessao.service] save suinos: ', suinos);
-        console.log('[sessao.service] save atividades: ', atividades);
-
         let create: SessaoCreateDTO = {
             id: null,
             dataSessao: dataSessao,
@@ -130,8 +140,6 @@ export class SessaoService {
             atividades: atividades,
             createdAt: new Date()
         };
-
-        console.log('[sessao.service] save: ', create);
 
         this.http.post(`${this.baseUrl}.json`, create).subscribe({
             next: (data: any) => {
@@ -155,8 +163,6 @@ export class SessaoService {
     let [ano, mes, dia] = form.dataSessao.split('-');
     const dataSessao = new Date(Number(ano), Number(mes) - 1, Number(dia));
 
-    console.log('[sessao.service] edit form: ', form);
-
     let suinos: Suino[];
     let atividades: Atividade[];
 
@@ -166,9 +172,6 @@ export class SessaoService {
     ]).subscribe(([suinosData, atividadesData]) => {
         suinos = suinosData;
         atividades = atividadesData;
-
-        console.log('[sessao.service] edit suinos: ', suinos);
-        console.log('[sessao.service] edit atividades: ', atividades);
 
         let edit: SessaoEditDTO = {
           id: form.id,
@@ -180,11 +183,8 @@ export class SessaoService {
           updatedAt: new Date()
         }
 
-        console.log('[sessao.service] edit: ', edit);
-
         this.http.put(`${this.baseUrl}/${form.id}.json`, edit).subscribe({
             next: (data: any) => {
-              console.log('[sessao.service] edit', data);
               this._sessaoAtualizada = {
                 id: data.id,
                 descricao: edit.descricao,

@@ -9,7 +9,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { SessaoService } from '../../../service/sessao.service';
 import { SuinoUtil } from '../../../util/suino.util';
 
-import { SnackbarConfigEnum } from '../../../enum/snackbar-config.enum';
 import { ActionEnum } from '../../../enum/action.enum';
 
 import { SessaoFormComponent } from '../sessao-form/sessao-form.component';
@@ -20,7 +19,7 @@ import { SessaoConverter } from '../../../model/sessao/sessao.converter';
 import { SessaoListDTO } from '../../../model/sessao/sessao-list.dto';
 import { SessaoFormDTO } from '../../../model/sessao/sessao-form.dto';
 import { Sessao } from '../../../model/sessao/sessao';
-import { DialogConfigEnum } from '../../../enum/dialog-config.enum';
+import { TimeoutConfigEnum } from '../../../enum/timeout.config.enum';
 
 @Component({
   selector: 'app-sessao-list',
@@ -90,13 +89,14 @@ export class SessaoListComponent implements OnInit {
         sessao.atividades = Array.from(new Set(sessao.atividades));
 
         let sessaoFormDTO: SessaoFormDTO = this.converter.toSessaoFormDTO(sessao);
+        console.log('[SessaoListComponent - editItem] sessaoFormDTO: ', sessaoFormDTO);
         this.openDialog(sessaoFormDTO);
       }
     });
   }
 
   atualizarDadosLista(lista: SessaoListDTO[]): void {
-    this.spinnerOn();
+    // this.spinnerOn();
     this.listaSessao = lista;
 
     this.dataSource = new MatTableDataSource<SessaoListDTO>(this.listaSessao);
@@ -113,7 +113,7 @@ export class SessaoListComponent implements OnInit {
       if (label) {
         label.innerHTML = 'Itens por página:';
       }
-    }, 1000);
+    }, TimeoutConfigEnum.UPDATE_LIST_DURATION);
 
     this.spinnerOff();
   }
@@ -163,7 +163,7 @@ export class SessaoListComponent implements OnInit {
             this.dataSource.data[index] = sessao;
             this.dataSource._updateChangeSubscription();
             this.dadosCarregados = true;
-          }, DialogConfigEnum.DURATION);
+          }, TimeoutConfigEnum.CLOSE_DIALOG_DURATION);
         }
 
         this.spinnerOff();
@@ -230,7 +230,7 @@ export class SessaoListComponent implements OnInit {
 
   openSnackBar (msg: string = 'Removido com sucesso!'): void {
     this.snackBar.open(msg, 'X', {
-      duration: SnackbarConfigEnum.DURATION,
+      duration: TimeoutConfigEnum.SNACK_BAR_DURATION,
       horizontalPosition: 'right',
       verticalPosition: 'top'
     });

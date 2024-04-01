@@ -1,16 +1,19 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
+import { lastValueFrom } from 'rxjs';
+
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { PesoService } from '../../../service/peso.service';
-import { SuinoUtil } from '../../../util/suino.util';
 
-import { SnackbarConfigEnum } from '../../../enum/snackbar-config.enum';
+import { TimeoutConfigEnum } from '../../../enum/timeout.config.enum';
 import { ActionEnum } from '../../../enum/action.enum';
 
 import { PesoFormDTO } from '../../../model/peso/peso-form.dto';
+import { Suino } from '../../../model/suino/suino';
+import { SuinoService } from '../../../service/suino.service';
 
 @Component({
   selector: 'app-peso-form',
@@ -18,19 +21,21 @@ import { PesoFormDTO } from '../../../model/peso/peso-form.dto';
   styleUrl: './peso-form.component.css'
 })
 export class PesoFormComponent implements OnInit {
-    @ViewChild('suinoFormRef') pesoFormRef: any;
+    @ViewChild('pesoFormRef') pesoFormRef: any;
     pesoForm: FormGroup;
+
+    spinner: boolean = false;
   
     title = 'Cadastrar peso';
     btnText = 'Cadastrar';
     action = ActionEnum.CREATE;
     dadosItemSelecionado: PesoFormDTO = {} as PesoFormDTO;
   
-    brincoAnimalList: number[] = [];
+    suinosList: Suino[] = [];
   
     constructor(
       private service: PesoService, 
-      private util: SuinoUtil,
+      private suinoService: SuinoService,
       private snackBar: MatSnackBar,
       public dialogRef: MatDialogRef<PesoFormComponent>,
       @Inject(MAT_DIALOG_DATA) public data: any,
@@ -40,10 +45,11 @@ export class PesoFormComponent implements OnInit {
       this.btnText = data.txtButton;
       this.action = data.action;
       this.dadosItemSelecionado = data.element;
+      console.log('[PesoFormComponent - constructor] dadosItemSelecionado: ', this.dadosItemSelecionado);
 
       this.pesoForm = new FormGroup({
         'id': new FormControl(null),
-        'brincoAnimal': new FormControl(null, [
+        'suino': new FormControl(null, [
           Validators.required
         ]),
         'peso': new FormControl(null, [
@@ -52,25 +58,48 @@ export class PesoFormComponent implements OnInit {
         ]),
         'dataPeso': new FormControl(null, [
           Validators.required
-        ])
+        ]),
+        'createdAt': new FormControl(null)
       });
     }
   
     ngOnInit(): void {
       if (this.dadosItemSelecionado) {
         this.pesoForm.patchValue(this.dadosItemSelecionado);
+        this.pesoForm.get('suino')?.setValue(this.dadosItemSelecionado.suino.id);
       }
 
-      this.service.listaPesosAnimal.subscribe(listaPesos => {
-        this.brincoAnimalList = listaPesos;
+      this.listarSuinos();
+    }
+
+    listarSuinos() {
+      this.suinoService.getAll().subscribe((listaSuinos: Suino[]) => {
+        this.suinosList = listaSuinos.sort((a, b) => a.brincoAnimal - b.brincoAnimal);
       });
     }
+    
   
-    onSubmit(): void {
+    async onSubmit(): Promise<void> {
+      this.spinnerOn();
       if (this.pesoForm.invalid) {
         this.openSnackBar('Por favor, preencha o formulário corretamente.');
+        this.spinnerOff();
         return;
       }
+
+      const peso = this.pesoForm.get('peso')?.value.replace(',', '.');
+      const suino = await this.getSuinoById(this.pesoForm.get('suino')?.value);
+    
+      if (suino === undefined) {
+        this.openSnackBar('Suíno não encontrado.');
+        this.spinnerOff();
+        return;
+      }
+      
+      this.pesoForm.get('peso')?.setValue(peso);
+      this.pesoForm.get('suino')?.setValue(suino);
+
+      console.log('[PesoFormComponent - onSubmit] this.pesoForm: ', this.pesoForm.value);
   
       if (this.action == ActionEnum.CREATE) {
         this.service.save(this.pesoForm.value);
@@ -80,8 +109,19 @@ export class PesoFormComponent implements OnInit {
         this.service.edit(this.pesoForm.value);
         this.openSnackBar('Atualizado com sucesso!');
       }
-  
+
+      this.spinnerOff();
     }
+
+    async getSuinoById(id: string): Promise<Suino | undefined> {
+      try {
+        return await lastValueFrom(this.suinoService.getSuinoById(id));
+      } catch (error) {
+        console.error('Erro ao obter suíno por ID:', error);
+        return undefined;
+      }
+    }
+
 
     // formataPeso(): void {
     //   this.pesoForm.get('peso')?.valueChanges.subscribe((valor: string) => {
@@ -92,9 +132,20 @@ export class PesoFormComponent implements OnInit {
   
     openSnackBar (msg: string = 'Cadastrado com sucesso!'): void {
       this.snackBar.open(msg, 'X', {
-        duration: SnackbarConfigEnum.DURATION,
+        duration: TimeoutConfigEnum.SNACK_BAR_DURATION,
         horizontalPosition: 'right',
         verticalPosition: 'top'
       });
     }
+
+    spinnerOn(): void {
+      this.spinner = true;
+    }
+  
+    spinnerOff(): void {
+      setTimeout(() => {
+        this.spinner = false;
+      }, 1000);
+    }
+
 }

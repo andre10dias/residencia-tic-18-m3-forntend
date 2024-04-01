@@ -1,17 +1,20 @@
 import { Component, ViewChild } from '@angular/core';
-import { SnackbarConfigEnum } from '../../../enum/snackbar-config.enum';
-import { PesoFormDTO } from '../../../model/peso/peso-form.dto';
-import { ActionEnum } from '../../../enum/action.enum';
-import { PesoFormComponent } from '../peso-form/peso-form.component';
-import { MatTableDataSource } from '@angular/material/table';
-import { PesoListDTO } from '../../../model/peso/peso-list.dto';
-import { PesoService } from '../../../service/peso.service';
-import { SuinoUtil } from '../../../util/suino.util';
+
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
-import { DialogComponent } from '../../dialog/dialog.component';
+import { MatTableDataSource } from '@angular/material/table';
+
+import { TimeoutConfigEnum } from '../../../enum/timeout.config.enum';
+import { ActionEnum } from '../../../enum/action.enum';
+
+import { PesoService } from '../../../service/peso.service';
+import { SuinoUtil } from '../../../util/suino.util';
+
+import { PesoFormDTO } from '../../../model/peso/peso-form.dto';
+import { PesoFormComponent } from '../peso-form/peso-form.component';
+import { PesoListDTO } from '../../../model/peso/peso-list.dto';
 import { PesoConverter } from '../../../model/peso/peso.converter';
 import { PesoHistoricoComponent } from '../peso-historico/peso-historico.component';
 import { PesoChartDTO } from '../../../model/peso/peso-chart.dto';
@@ -42,7 +45,7 @@ export class PesoListComponent {
     private snackBar: MatSnackBar,
     public dialog: MatDialog,
   ) {
-    this.carregardadosList();
+    this.carregarDadosList();
   }
 
   ngOnInit(): void {
@@ -63,20 +66,24 @@ export class PesoListComponent {
     // }
   }
 
-  carregardadosList(): void {
+  carregarDadosList(): void {
+    this.spinnerOn();
+
     this.service.getAll().subscribe({
       next: pesos => {
         this.listaPesos = this.converter.toListPesoListDTOs(pesos);
         this.atualizarDadosLista(this.listaPesos);
+        this.spinnerOff();
       },
       error: error => {
-        console.error('Erro ao carregar a lista:', error);
+        this.openSnackBar('Falha ao carregar a lista de pesos.');
+        console.error(error);
+        this.spinnerOff();
       }
     });
   }
 
   atualizarDadosLista(lista: PesoListDTO[]): void {
-    this.spinnerOn();
     this.listaPesos = lista;
     this.dataSource = new MatTableDataSource<PesoListDTO>(this.listaPesos);
     this.sortedData = this.listaPesos.slice();
@@ -92,12 +99,11 @@ export class PesoListComponent {
       if (label) {
         label.innerHTML = 'Itens por página:';
       }
-    }, 1000);
-
-    this.spinnerOff();
+    }, TimeoutConfigEnum.UPDATE_LIST_DURATION);
   }
 
   openDialog(element?: PesoFormDTO): void {
+    console.log('[PesoListComponent - openDialog] element: ', element);
     const dialogRef = this.dialog.open(PesoFormComponent, {
       width: '600px',
       disableClose: true,
@@ -117,10 +123,12 @@ export class PesoListComponent {
         if (index !== -1) {
           setTimeout(() => {
             let peso = this.service.pesoAtualizado;
+            console.log('[PesoListComponent - openDialog] peso: ', peso);
             this.dataSource.data[index] = peso;
+            console.log('[PesoListComponent - openDialog] dataSource: ', this.dataSource.data);
             this.dataSource._updateChangeSubscription();
             this.dadosCarregados = true;
-          }, 1000);
+          }, TimeoutConfigEnum.CLOSE_DIALOG_DURATION);
         }
 
         this.spinnerOff();
@@ -157,7 +165,7 @@ export class PesoListComponent {
     this.service.getPesoById(id).subscribe(peso => {
       if (peso) {
         peso.id = id;
-        this.service.getPesoByBrincoAnimal(peso.brincoAnimal).subscribe(pesos => {
+        this.service.getPesosBySuinoId(peso.suino.id).subscribe(pesos => {
           const pesoChart: PesoChartDTO[] = this.converter.toListPesoChartDTOs(pesos);
           this.openHistoricoDialog(pesoChart);
         });
@@ -178,7 +186,7 @@ export class PesoListComponent {
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
         case 'brincoAnimal':
-          return this.util.compare(a.brincoAnimal, b.brincoAnimal, isAsc);
+          return this.util.compare(a.suino.brincoAnimal, b.suino.brincoAnimal, isAsc);
         case 'dataPeso':
           return this.util.compareDates(a.dataPeso, b.dataPeso, isAsc);
         case 'peso':
@@ -195,19 +203,19 @@ export class PesoListComponent {
 
   openSnackBar (msg: string = 'Removido com sucesso!'): void {
     this.snackBar.open(msg, 'X', {
-      duration: SnackbarConfigEnum.DURATION,
+      duration: TimeoutConfigEnum.SNACK_BAR_DURATION,
       horizontalPosition: 'right',
       verticalPosition: 'top'
     });
   }
 
   spinnerOn(): void {
-    this.spinner = false;
+    this.spinner = true;
   }
 
   spinnerOff(): void {
     setTimeout(() => {
-      this.spinner = true;
+      this.spinner = false;
     }, 1000);
   }
 

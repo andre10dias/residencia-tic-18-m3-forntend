@@ -6,17 +6,23 @@ import { MatPaginator } from '@angular/material/paginator';
 import { Sort, MatSort } from '@angular/material/sort';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+import { lastValueFrom } from 'rxjs';
+
 import { SuinoService } from '../../../service/suino.service';
 import { SuinoUtil } from '../../../util/suino.util';
 import { SuinoConverter } from '../../../model/suino/suino.converter';
+
+import { ActionEnum } from '../../../enum/action.enum';
+import { TimeoutConfigEnum } from '../../../enum/timeout.config.enum';
 
 import { SuinoListDTO } from '../../../model/suino/suino-list.dto';
 import { DialogComponent } from '../../dialog/dialog.component';
 import { SuinoFormDTO } from '../../../model/suino/suino-form.dto';
 import { SuinoFormComponent } from '../suino-form/suino-form.component';
-import { ActionEnum } from '../../../enum/action.enum';
-import { SnackbarConfigEnum } from '../../../enum/snackbar-config.enum';
-import { DialogConfigEnum } from '../../../enum/dialog-config.enum';
+import { PesoService } from '../../../service/peso.service';
+import { SessaoService } from '../../../service/sessao.service';
+import { Peso } from '../../../model/peso/peso';
+import { Sessao } from '../../../model/sessao/sessao';
 
 @Component({
   selector: 'app-suino-list',
@@ -28,6 +34,9 @@ export class SuinoListComponent implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
   
   listaSuinos: SuinoListDTO[] = [];
+  listaPesosSuino: Peso[] = [];
+  listaSessoesSuino: Sessao[] = [];
+
   dadosCarregados: boolean = false;
   spinner: boolean = false;
   screenWidth: number = window.innerWidth;
@@ -43,6 +52,8 @@ export class SuinoListComponent implements OnInit {
 
   constructor(
     private service: SuinoService,
+    private pesoService: PesoService,
+    private sessaoService: SessaoService,
     private util: SuinoUtil,
     private converter: SuinoConverter,
     private snackBar: MatSnackBar,
@@ -92,6 +103,7 @@ export class SuinoListComponent implements OnInit {
     this.service.getAll().subscribe({
       next: suinos => {
         this.listaSuinos = this.converter.toListSuinoListDTOs(suinos);
+        console.log('[SuinoListComponent - carregardadosList] listaSuinos: ', this.listaSuinos);
         this.atualizarDadosLista(this.listaSuinos);
       },
       error: error => {
@@ -132,7 +144,7 @@ export class SuinoListComponent implements OnInit {
     //   return dateB.getTime() - dateA.getTime();
     // });
 
-    // console.log(this.listaSuinos);
+    console.log('[SuinoListComponent - atualizarDadosLista] listaSuinos: ', this.listaSuinos);
 
     this.dataSource = new MatTableDataSource<SuinoListDTO>(this.listaSuinos);
     this.sortedData = this.listaSuinos.slice();
@@ -148,7 +160,7 @@ export class SuinoListComponent implements OnInit {
       if (label) {
         label.innerHTML = 'Itens por página:';
       }
-    }, 1000);
+    }, TimeoutConfigEnum.UPDATE_LIST_DURATION);
 
     this.spinnerOff();
   }
@@ -170,13 +182,15 @@ export class SuinoListComponent implements OnInit {
         this.spinnerOn();
         const index = this.dataSource.data.findIndex(item => item.id === element?.id);
 
+        console.log('Close dialog');
+
         if (index !== -1) {
           setTimeout(() => {
             let suino = this.service.suinoAtualizado;
             this.dataSource.data[index] = suino;
             this.dataSource._updateChangeSubscription();
             this.dadosCarregados = true;
-          }, DialogConfigEnum.DURATION);
+          }, TimeoutConfigEnum.CLOSE_DIALOG_DURATION);
         }
 
         this.spinnerOff();
@@ -185,6 +199,7 @@ export class SuinoListComponent implements OnInit {
   }
 
   editItem(id: string): void {
+    console.log('[SuinoListComponent - editItem]  Chamando getSuinoById: ', id);
     this.service.getSuinoById(id).subscribe(suino => {
       if (suino) {
         suino.id = id;
@@ -194,15 +209,37 @@ export class SuinoListComponent implements OnInit {
     });
   }
 
-  removeItem(id: string): void {
+  async removeItem(id: string): Promise<void> {
     const index = this.dataSource.data.findIndex(item => item.id === id);
 
     if (index !== -1) {
-      this.service.delete(id);
+      const listaPesosAssociados = await this.buscarPesosAssociados(id);
+      const listaSessoesAssociadas = await this.buscarSessoesAssociadas(id);
+
+      this.service.delete(id, listaPesosAssociados, listaSessoesAssociadas);
       this.openSnackBar();
 
       this.dataSource.data.splice(index, 1);
+      console.log('[SuinoListComponent - removeItem] dataSource: ', this.dataSource);
       this.dataSource._updateChangeSubscription();
+    }
+  }
+
+  async buscarPesosAssociados(suinoId: string): Promise<Peso[]> {
+    try {
+      return await lastValueFrom(this.pesoService.getPesosBySuinoId(suinoId));
+    } catch (error) {
+      console.error('Erro ao buscar pesos associados ao suíno:', error);
+      return [];
+    }
+  }
+
+  async buscarSessoesAssociadas(suinoId: string): Promise<Sessao[]> {
+    try {
+      return await lastValueFrom(this.sessaoService.getSessoesBySuinoId(suinoId));
+    } catch (error) {
+      console.error('Erro ao buscar pesos associados ao suíno:', error);
+      return [];
     }
   }
 
@@ -266,19 +303,19 @@ export class SuinoListComponent implements OnInit {
 
   openSnackBar (msg: string = 'Removido com sucesso!'): void {
     this.snackBar.open(msg, 'X', {
-      duration: SnackbarConfigEnum.DURATION,
+      duration: TimeoutConfigEnum.SNACK_BAR_DURATION,
       horizontalPosition: 'right',
       verticalPosition: 'top'
     });
   }
 
   spinnerOn(): void {
-    this.spinner = false;
+    this.spinner = true;
   }
 
   spinnerOff(): void {
     setTimeout(() => {
-      this.spinner = true;
+      this.spinner = false;
     }, 1000);
   }
 

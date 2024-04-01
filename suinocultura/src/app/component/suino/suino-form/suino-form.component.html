@@ -10,6 +10,7 @@
       <mat-dialog-content>
         <form [formGroup]="suinoForm" #suinoFormRef="ngForm" (ngSubmit)="onSubmit()">
             <input type="hidden" name="id" formControlName="id">
+            <input type="hidden" name="createdAt" formControlName="createdAt">
         
             <div class="row-1">
                 <div class="form-group">

@@ -1,8 +1,12 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActionEnum } from '../../enum/action.enum';
-import { PesoFormComponent } from './peso-form/peso-form.component';
+
 import { PesoService } from '../../service/peso.service';
+
+import { ActionEnum } from '../../enum/action.enum';
+import { TimeoutConfigEnum } from '../../enum/timeout.config.enum';
+
+import { PesoFormComponent } from './peso-form/peso-form.component';
 
 @Component({
   selector: 'app-peso',
@@ -10,7 +14,7 @@ import { PesoService } from '../../service/peso.service';
   styleUrl: './peso.component.css'
 })
 export class PesoComponent {
-  spinner: boolean = true;
+  spinner: boolean = false;
 
   constructor(
     private service: PesoService,
@@ -32,14 +36,14 @@ export class PesoComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.spinner = false;
+        this.spinner = true;
         // console.log('[SuinoComponent] The dialog was closed');
         // console.log('[SuinoComponent] element: ', element);
         this.service.novoPesoAdicionado();
   
         setTimeout(() => {
-          this.spinner = true;
-        }, 1000);
+          this.spinner = false;
+        }, TimeoutConfigEnum.CLOSE_DIALOG_DURATION);
       }
     });
   }

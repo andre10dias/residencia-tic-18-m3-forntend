@@ -10,22 +10,23 @@
     <mat-dialog-content>
         <form [formGroup]="pesoForm" #pesoFormRef="ngForm" (ngSubmit)="onSubmit()">
             <input type="hidden" name="id" formControlName="id">
+            <input type="hidden" name="createdAt" formControlName="createdAt">
         
             <div class="row-1">
                 <div class="form-group">
                     <mat-label>Brinco do animal</mat-label>
-                    <div id="brinco-animal">
-                        <mat-select formControlName="brincoAnimal" placeholder="Selecione..."
-                            [ngClass]="{'invalid-field': pesoForm.get('brincoAnimal')?.invalid 
-                                && pesoForm.get('brincoAnimal')?.touched}"
+                    <div id="suino">
+                        <mat-select formControlName="suino" placeholder="Selecione..."
+                            [ngClass]="{'invalid-field': pesoForm.get('suino')?.invalid 
+                                && pesoForm.get('suino')?.touched}"
                         >
                             <mat-option value="">Selecione...</mat-option>
-                            @for (brincoAnimal of brincoAnimalList; track brincoAnimal) {
-                                <mat-option [value]="brincoAnimal">{{brincoAnimal}}</mat-option>
+                            @for (suino of suinosList; track suino) {
+                                <mat-option [value]="suino.id">{{suino.brincoAnimal}}</mat-option>
                             }
                         </mat-select>
                         <div>
-                            <mat-error *ngIf="!pesoForm.get('brincoAnimal')?.valid && pesoForm.get('brincoAnimal')?.touched"
+                            <mat-error *ngIf="!pesoForm.get('suino')?.valid && pesoForm.get('suino')?.touched"
                             >Campo obrigatório.</mat-error>
                         </div>
                     </div>

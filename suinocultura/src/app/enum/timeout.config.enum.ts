@@ -1,0 +1,5 @@
+export enum TimeoutConfigEnum {
+    UPDATE_LIST_DURATION = 1500,
+    CLOSE_DIALOG_DURATION = 1500,
+    SNACK_BAR_DURATION = 3500
+}

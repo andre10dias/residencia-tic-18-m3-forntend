@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { Observable, Subject, map } from 'rxjs';
-import { PesoListDTO } from '../model/peso/peso-list.dto';
+
 import { SuinoUtil } from '../util/suino.util';
+
+import { PesoListDTO } from '../model/peso/peso-list.dto';
 import { Peso } from '../model/peso/peso';
 import { FirebaseCredentials } from '../model/firebase/firebase-credentials';
 import { PesoCreateDTO } from '../model/peso/peso-create.dto';
 import { PesoEditDTO } from '../model/peso/peso-edit.dto';
-import { Suino } from '../model/suino/suino';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ import { Suino } from '../model/suino/suino';
 export class PesoService {
   fire: FirebaseCredentials = new FirebaseCredentials();
   baseUrl: string = `${this.fire.baseUrl}/peso`;
-  baseUrlSuino: string = `${this.fire.baseUrl}/suino`;
+  // baseUrlSuino: string = `${this.fire.baseUrl}/suino`;
   
   private novoPesoSubject = new Subject<any>();
   private novoPeso: PesoListDTO = {} as PesoListDTO;
@@ -44,16 +45,13 @@ export class PesoService {
     }, 1000);
   }
 
-  // retorna a lista de pesos ordenados e sem valores repetidos
-  get listaPesosAnimal() {
-    return this.getSuinoAll().pipe(
-      map(listaSuino => {
-        const pesosUnicos = new Set<number>();
-        listaSuino.forEach(suino => pesosUnicos.add(suino.brincoAnimal));
-        return Array.from(pesosUnicos).sort((a, b) => a - b);
-      })
-    );
-  }
+  // get listarSuinos() {
+  //   return this.getSuinoAll().pipe(
+  //     map(listaSuinos => {
+  //       return listaSuinos.sort((a, b) => a.brincoAnimal - b.brincoAnimal);
+  //     })
+  //   );
+  // }
 
   retornaListaPesosByBrincoAnimal(brincoAnimal: number): Observable<Peso[]> {
     return this.getAll().pipe(
@@ -62,7 +60,23 @@ export class PesoService {
           return [];
         }
 
-        const listaPesos = pesos.filter(peso => peso.brincoAnimal === brincoAnimal);
+        const listaPesos = pesos.filter(peso => peso.suino.brincoAnimal === brincoAnimal);
+  
+        // Ordena os pesos pela dataPeso
+        listaPesos.sort((a, b) => a.dataPeso.getTime() - b.dataPeso.getTime());
+        return listaPesos;
+      })
+    );
+  }
+
+  getListaPesosBySuinoId(suinoId: string): Observable<Peso[]> {
+    return this.getAll().pipe(
+      map(pesos => {
+        if (!pesos) {
+          return [];
+        }
+
+        const listaPesos = pesos.filter(peso => peso.suino.id === suinoId);
   
         // Ordena os pesos pela dataPeso
         listaPesos.sort((a, b) => a.dataPeso.getTime() - b.dataPeso.getTime());
@@ -96,40 +110,56 @@ export class PesoService {
     );
   }
 
-  private getSuinoAll(): Observable<Suino[]> {
-    return this.http.get<{ [key: string]: Suino }>(`${this.baseUrlSuino}.json`).pipe(
-      map(data => {
-        const listaSuino: Suino[] = [];
+  // private getSuinoAll(): Observable<Suino[]> {
+  //   return this.http.get<{ [key: string]: Suino }>(`${this.baseUrlSuino}.json`).pipe(
+  //     map(data => {
+  //       const listaSuino: Suino[] = [];
 
-        for (const key in data) {
-          if (data.hasOwnProperty(key)) {
-            listaSuino.push({ ...(data as any)[key], id: key });
-          }
-        }
+  //       for (const key in data) {
+  //         if (data.hasOwnProperty(key)) {
+  //           listaSuino.push({ ...(data as any)[key], id: key });
+  //         }
+  //       }
 
-        return listaSuino;
+  //       return listaSuino;
+  //     })
+  //   );
+  // }
+
+  // getSuinoByBrinco(brinco: number): Suino | any {
+  //   this.getSuinoAll().subscribe((listaSuinos: Suino[]) => {
+  //     listaSuinos.forEach((suino: any) => {
+  //       if (suino.brincoAnimal === brinco) {
+  //         return suino;
+  //       }
+  //     })
+
+  //     return {} as Suino;
+  //   });
+  // }
+
+  getPesosByBrincoAnimal(brincoAnimal: number): Observable<Peso[]> {
+    return this.getAll().pipe(
+      map((pesos: Peso[]) => {
+        return pesos.filter(peso => peso.suino.brincoAnimal === brincoAnimal);
       })
     );
   }
 
-  getSuinoByBrinco(brinco: number): Suino | any {
-    this.getSuinoAll().subscribe((listaSuinos: Suino[]) => {
-      listaSuinos.forEach((suino: any) => {
-        if (suino.brincoAnimal === brinco) {
-          return suino;
-        }
+  // getPesoBySuinoId(suinoId: string): Observable<Peso[]> {
+  //   let lista =  this.getAll().pipe(
+  //     map(pesos => pesos.filter(peso => peso.suino.id === suinoId))
+  //   );
+
+  //   return lista;
+  // }
+
+  getPesosBySuinoId(suinoId: string): Observable<Peso[]> {
+    return this.getAll().pipe(
+      map((pesos: Peso[]) => {
+        return pesos.filter(peso => peso.suino.id === suinoId);
       })
-
-      return {} as Suino;
-    });
-  }
-
-  getPesoByBrincoAnimal(brincoAnimal: number): Observable<Peso[]> {
-    let lista =  this.getAll().pipe(
-      map(pesos => pesos.filter(peso => peso.brincoAnimal === brincoAnimal))
     );
-
-    return lista;
   }
 
   save(form: any) {
@@ -138,7 +168,7 @@ export class PesoService {
 
     let create: PesoCreateDTO = {
       id: null,
-      brincoAnimal: form.brincoAnimal,
+      suino: form.suino,
       peso: form.peso,
       dataPeso: dataPeso,
       createdAt: new Date()
@@ -148,7 +178,7 @@ export class PesoService {
       next: (data: any) => {
         this.novoPeso = {
           id: data.name,
-          brincoAnimal: create.brincoAnimal,
+          suino: create.suino,
           peso: create.peso,
           dataPeso: this.util.formatarData(create.dataPeso, 'dd/MM/yyyy'),
           createdAt: this.util.formatarData(create.createdAt, 'dd/MM/yyyy')
@@ -165,7 +195,8 @@ export class PesoService {
     const dataPeso = new Date(Number(anoNasc), Number(mesNasc) - 1, Number(diaNasc));
 
     let edit: PesoEditDTO = {
-      brincoAnimal: form.brincoAnimal,
+      id: form.id,
+      suino: form.suino,
       peso: form.peso,
       dataPeso: dataPeso,
       createdAt: form.createdAt,
@@ -175,11 +206,11 @@ export class PesoService {
     this.http.put(`${this.baseUrl}/${form.id}.json`, edit).subscribe({
       next: (data: any) => {
         this._pesoAtualizado = {
-          id: data.id,
-          brincoAnimal: edit.brincoAnimal,
+          id: edit.id,
+          suino: edit.suino,
           peso: edit.peso,
           dataPeso: this.util.formatarData(edit.dataPeso, 'dd/MM/yyyy'),
-          createdAt: this.util.formatarData(edit.createdAt, 'dd/MM/yyyy')
+          createdAt: this.util.formatarData(data.createdAt, 'dd/MM/yyyy')
         };
       },
       error: (error: any) => {

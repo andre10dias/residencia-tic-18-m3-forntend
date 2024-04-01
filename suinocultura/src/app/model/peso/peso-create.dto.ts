@@ -1,6 +1,8 @@
+import { Suino } from "../suino/suino";
+
 export interface PesoCreateDTO {
     id: string | null;
-    brincoAnimal: number;
+    suino: Suino;
     peso: number;
     dataPeso: Date;
     createdAt: Date;

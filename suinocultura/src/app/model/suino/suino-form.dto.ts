@@ -7,4 +7,5 @@ export interface SuinoFormDTO {
     dataSaida: string;
     status: string;
     sexo: string;
+    createdAt: Date;
 }

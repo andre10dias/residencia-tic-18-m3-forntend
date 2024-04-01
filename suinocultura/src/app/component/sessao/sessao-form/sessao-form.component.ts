@@ -1,14 +1,17 @@
 import { Component, Inject, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { forkJoin } from 'rxjs';
-
-import { ActionEnum } from '../../../enum/action.enum';
-import { SessaoFormDTO } from '../../../model/sessao/sessao-form.dto';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+
+import { forkJoin } from 'rxjs';
+
 import { SessaoService } from '../../../service/sessao.service';
-import { SnackbarConfigEnum } from '../../../enum/snackbar-config.enum';
+
+import { ActionEnum } from '../../../enum/action.enum';
+import { TimeoutConfigEnum } from '../../../enum/timeout.config.enum';
+
+import { SessaoFormDTO } from '../../../model/sessao/sessao-form.dto';
 import { Suino } from '../../../model/suino/suino';
 import { Atividade } from '../../../model/sessao/atividade';
 
@@ -33,6 +36,7 @@ export class SessaoFormComponent {
   constructor(
     private snackBar: MatSnackBar,
     private service: SessaoService,
+    private suinoService: SessaoService,
     public dialogRef: MatDialogRef<SessaoFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
@@ -64,8 +68,11 @@ export class SessaoFormComponent {
         this.service.getListaSuinos(this.dadosItemSelecionado.suinosId),
         this.service.getListaAtividades(this.dadosItemSelecionado.atividadesId)
       ]).subscribe(([suinosData, atividadesData]) => {
-        this.suinosList = suinosData;
-        this.atividadesList = atividadesData;
+        // this.suinosList = suinosData;
+        // this.atividadesList = atividadesData;
+
+        console.log('[SessaoFormComponent - ngOnInit] suinosData: ', suinosData);
+        console.log('[SessaoFormComponent - ngOnInit] atividadesData: ', atividadesData);
   
         this.sessaoForm.patchValue({
           id: this.dadosItemSelecionado.id,
@@ -105,7 +112,7 @@ export class SessaoFormComponent {
 
   openSnackBar (msg: string = 'Cadastrado com sucesso!'): void {
     this.snackBar.open(msg, 'X', {
-      duration: SnackbarConfigEnum.DURATION,
+      duration: TimeoutConfigEnum.SNACK_BAR_DURATION,
       horizontalPosition: 'right',
       verticalPosition: 'top'
     });

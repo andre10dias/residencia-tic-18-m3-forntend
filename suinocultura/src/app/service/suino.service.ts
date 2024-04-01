@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { Observable, Subject, map } from 'rxjs';
+import { EMPTY, Observable, Subject, catchError, concatMap, forkJoin, map, tap, throwError } from 'rxjs';
 
 import { SexoDescricaoEnum, SexoEnum } from '../enum/sexo.enum';
 import { StatusDescricaoEnum, StatusEnum } from '../enum/status.enum';
@@ -13,6 +13,10 @@ import { Suino } from '../model/suino/suino';
 import { SuinoCreateDTO } from '../model/suino/suino-create.dto';
 import { SuinoListDTO } from '../model/suino/suino-list.dto';
 import { SuinoEditDTO } from '../model/suino/suino-edit.dto';
+import { Peso } from '../model/peso/peso';
+import { Sessao } from '../model/sessao/sessao';
+import { Atividade } from '../model/sessao/atividade';
+import { SessaoEditDTO } from '../model/sessao/sessao-edit.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -43,7 +47,9 @@ export class SuinoService {
   private _suinosFiltrados: SuinoListDTO[] = [];
 
   private _resetSubject = new Subject<SuinoListDTO[]>();
-  private _resetList: SuinoListDTO[] = [];
+  // private _resetList: SuinoListDTO[] = [];
+
+  private deleteSuinoSubject = new Subject<void>();
 
   constructor(
     private http: HttpClient,
@@ -73,6 +79,10 @@ export class SuinoService {
   get suinoAtualizado() {
     return this._suinoAtualizado;
   }
+  
+  getDeleteSuinoObservable(): Observable<void> {
+    return this.deleteSuinoSubject.asObservable();
+  }
 
   getAll(): Observable<Suino[]> {
     return this.http.get<{ [key: string]: Suino }>(`${this.baseUrl}.json`).pipe(
@@ -91,9 +101,12 @@ export class SuinoService {
   }
 
   getSuinoById(id: string): Observable<Suino> {
+    console.log('[suino.service] getSuinoById typeof: ', id, typeof id);
+    console.log('[suino.service] getSuinoById: ', id);
     return this.http.get<Suino>(`${this.baseUrl}/${id}.json`).pipe(
       map((data: any) => {
         data.id = id;
+        console.log('[suino.service] getSuinoById: ', data);
         return data as Suino;
       })
     );
@@ -105,6 +118,17 @@ export class SuinoService {
             const suinoEncontrado = listaSuinos.find((suino: any) => suino.brincoAnimal === brinco);
             return suinoEncontrado !== undefined ? suinoEncontrado : undefined; 
         })
+    );
+  }
+
+  getAtividadeById(id: string): Observable<Atividade> {
+    let baseUrlAtividade: string = `${this.fire.baseUrl}/atividade`;
+
+    return this.http.get<Atividade>(`${baseUrlAtividade}/${id}.json`).pipe(
+      map((data: any) => {
+        data.id = id;
+        return data as Atividade;
+      })
     );
   }
 
@@ -161,6 +185,7 @@ export class SuinoService {
     const dataSaida = new Date(Number(anoSai), Number(mesSai) - 1, Number(diaSai));
 
     let edit: SuinoEditDTO = {
+      id: form.id,
       brincoAnimal: form.brincoAnimal,
       brincoPai: form.brincoPai,
       brincoMae: form.brincoMae,
@@ -168,14 +193,14 @@ export class SuinoService {
       dataSaida: dataSaida,
       status: form.status,
       sexo: form.sexo,
-      createdAt: form.createAt,
+      createdAt: form.createdAt,
       updatedAt: new Date()
     }
 
     this.http.put(`${this.baseUrl}/${form.id}.json`, edit).subscribe({
       next: (data: any) => {
         this._suinoAtualizado = {
-          id: data.id,
+          id: edit.id,
           brincoAnimal: edit.brincoAnimal,
           brincoPai: edit.brincoPai,
           brincoMae: edit.brincoMae,
@@ -183,8 +208,10 @@ export class SuinoService {
           dataSaida: this.util.formatarData(edit.dataSaida, 'dd/MM/yyyy'),
           status: edit.status,
           sexo: edit.sexo,
-          createdAt: this.util.formatarData(edit.createdAt, 'dd/MM/yyyy')
+          createdAt: this.util.formatarData(data.createdAt, 'dd/MM/yyyy')
         };
+
+        console.log('[Suino.service - edit] _suinoAtualizado', this._suinoAtualizado);
       },
       error: (error: any) => {
         console.log('error: ', error)
@@ -192,15 +219,96 @@ export class SuinoService {
     });
   }
 
-  delete(id: string) {
-    return this.http.delete(`${this.baseUrl}/${id}.json`).subscribe({
-      next: (data: any) => {
-        // console.log(data);
-      },
-      error: (error: any) => {
-        console.log('error: ', error)
+  delete(id: string, listaPesos: Peso[], listaSessoes: Sessao[]): void {
+    try {
+      this.http.delete(`${this.baseUrl}/${id}.json`).subscribe({
+        next: (data: any) => {
+          this.deletePesosAssociados(listaPesos);
+          this.deleteSessoesAssociadas(id, listaSessoes);
+        },
+        error: (error: any) => {
+          console.log('error: ', error)
+        }
+      });
+    } catch (error) {
+      console.error('Erro ao excluir suino:', error);
+    }
+  }
+
+  deletePesosAssociados(listaPesos: Peso[]) {
+    try {
+      if (listaPesos.length === 0) {
+        console.log('Nenhum peso para excluir.');
+        return;
       }
-    });
+
+      const pesoUrl = `${this.fire.baseUrl}/peso`;
+    
+      listaPesos.forEach(peso => {
+        this.http.delete<void>(`${pesoUrl}/${peso.id}.json`).subscribe({
+          next: () => {
+            // console.log(`Peso ${peso.id} excluído com sucesso.`);
+          },
+          error: error => {
+            console.error('Erro ao excluir peso:', error);
+            throw error; // Lança o erro para o chamador tratar, se necessário
+          }
+        });
+      });
+    } catch (error) {
+      console.error('Erro ao excluir peso:', error);
+    }
+  }
+
+  deleteSessoesAssociadas(suinoId: string, listaSessoes: Sessao[]) {
+    try {
+      if (listaSessoes.length === 0) {
+        console.log('Nenhum sessão para excluir.');
+        return; 
+      }
+
+      const sessaoUrl = `${this.fire.baseUrl}/sessao`;
+
+      listaSessoes.forEach(sessao => {
+        if (sessao.suinos.length > 1) {
+          // Se houver mais de um suíno na sessão, remove apenas o suíno específico
+          const suinosRestantes = sessao.suinos.filter(suino => suino.id !== suinoId);
+          sessao.suinos = suinosRestantes;
+          
+          this.http.put<void>(`${sessaoUrl}/${sessao.id}.json`, sessao).subscribe({
+            next: (data: any) => {
+              // console.log('Sessão atualizada com sucesso!');
+            },
+            error: (error: any) => {
+                console.log('error: ', error)
+            }
+        });
+        } else {
+          // Se houver apenas um suíno na sessão, exclui a sessão inteira
+          this.http.delete<void>(`${sessaoUrl}/${sessao.id}.json`).subscribe({
+            next: () => {
+              console.log(`Sessao ${sessao.id} excluído com sucesso.`);
+            },
+            error: error => {
+              console.error('Erro ao excluir sessao:', error);
+              throw error; 
+            }
+          });
+        }
+      });
+    } catch (error) {
+      console.error('Erro ao excluir sessões:', error);
+    }
+  }
+
+  getListaSuinos(suinosId: string[]): Observable<Suino[]> {
+    const observables = suinosId.map(id => this.getSuinoById(id));
+    return forkJoin(observables);
+  }
+
+  getListaAtividades(atividadesId: string[]): Observable<Atividade[]> {
+    const observables = atividadesId.map(id => this.getAtividadeById(id));
+    return forkJoin(observables);
   }
 
   filtrar(form: any): void {

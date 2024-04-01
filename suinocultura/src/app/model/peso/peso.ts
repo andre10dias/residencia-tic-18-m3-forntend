@@ -1,6 +1,8 @@
+import { Suino } from "../suino/suino";
+
 export class Peso {
     private _id: string;
-    private _brincoAnimal: number;
+    private _suino: Suino;
     private _peso: number;
     private _dataPeso: Date;
     private _createdAt: Date;
@@ -8,14 +10,14 @@ export class Peso {
 
     constructor(
         id: string,
-        brincoAnimal: number,
+        suino: Suino,
         peso: number,
         dataPeso: Date,
         createdAt: Date,
         updatedAt: Date | null
     ) {
         this._id = id;
-        this._brincoAnimal = brincoAnimal;
+        this._suino = suino;
         this._peso = peso;
         this._dataPeso = dataPeso;
         this._createdAt = createdAt;
@@ -30,12 +32,12 @@ export class Peso {
         this._id = value;
     }
 
-    get brincoAnimal(): number {
-        return this._brincoAnimal;
+    get suino(): Suino {
+        return this._suino;
     }
 
-    set brincoAnimal(value: number) {
-        this._brincoAnimal = value;
+    set suino(value: Suino) {
+        this._suino = value;
     }
 
     get peso(): number {

@@ -1,10 +1,11 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { MatDialog } from '@angular/material/dialog';
 
 import { SuinoService } from '../../service/suino.service';
 import { SuinoFormComponent } from './suino-form/suino-form.component';
 import { ActionEnum } from '../../enum/action.enum';
+import { TimeoutConfigEnum } from '../../enum/timeout.config.enum';
 
 @Component({
   selector: 'app-suino',
@@ -12,7 +13,7 @@ import { ActionEnum } from '../../enum/action.enum';
   styleUrl: './suino.component.css'
 })
 export class SuinoComponent {
-  spinner: boolean = true;
+  spinner: boolean = false;
 
   constructor(
     private service: SuinoService,
@@ -34,14 +35,14 @@ export class SuinoComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.spinner = false;
+        this.spinner = true;
         // console.log('[SuinoComponent] The dialog was closed');
         // console.log('[SuinoComponent] element: ', element);
         this.service.novoSuinoAdicionado();
   
         setTimeout(() => {
-          this.spinner = true;
-        }, 1000);
+          this.spinner = false;
+        }, TimeoutConfigEnum.CLOSE_DIALOG_DURATION);
       }
     });
   }

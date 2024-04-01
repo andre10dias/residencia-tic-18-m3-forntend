@@ -31,7 +31,7 @@ export class PesoConverter {
             // console.log('[pesoConverter] toListPesoListDTOs: ', data);
             peso = {
                 id: data.id,
-                brincoAnimal: data.brincoAnimal,
+                suino: data.suino,
                 dataPeso: this.util.formatarData(data.dataPeso, 'dd/MM/yyyy'),
                 peso: data.peso,
                 createdAt: this.util.formatarData(data.createdAt, 'dd/MM/yyyy')
@@ -46,9 +46,10 @@ export class PesoConverter {
     toPesoFormDTO(peso: Peso): PesoFormDTO {
         let pesoFormDTO: PesoFormDTO = {
             id: peso.id,
-            brincoAnimal: peso.brincoAnimal,
+            suino: peso.suino,
             dataPeso: this.util.formatarData(peso.dataPeso),
-            peso: peso.peso
+            peso: peso.peso,
+            createdAt: peso.createdAt
         };
 
         return pesoFormDTO;
@@ -61,7 +62,7 @@ export class PesoConverter {
         listaPesos.forEach(data => {
             peso = {
                 id: data.id,
-                brincoAnimal: data.brincoAnimal,
+                brincoAnimal: data.suino.brincoAnimal,
                 dataPeso: this.util.formatarData(data.dataPeso, 'dd/MM/yyyy'),
                 peso: data.peso
             }

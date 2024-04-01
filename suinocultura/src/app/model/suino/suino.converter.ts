@@ -41,7 +41,7 @@ export class SuinoConverter {
             }
 
             suinosListDTO.push(suino);
-        })
+        });
 
         return suinosListDTO;
     }
@@ -55,8 +55,11 @@ export class SuinoConverter {
             dataNascimento: this.util.formatarData(suino.dataNascimento),
             dataSaida: this.util.formatarData(suino.dataSaida),
             status: suino.status,
-            sexo: suino.sexo
+            sexo: suino.sexo,
+            createdAt: suino.createdAt
         };
+
+        console.log('[suinoConverter] toSuinoFormDTO: ', suinoFormDTO);
 
         return suinoFormDTO;
     }

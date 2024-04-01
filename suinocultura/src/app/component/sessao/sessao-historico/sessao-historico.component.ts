@@ -1,14 +1,16 @@
 import { Component, Inject } from '@angular/core';
+
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { SessaoService } from '../../../service/sessao.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Sessao } from '../../../model/sessao/sessao';
 import { MatTableDataSource } from '@angular/material/table';
+
+import { SessaoService } from '../../../service/sessao.service';
+import { SuinoUtil } from '../../../util/suino.util';
+
+import { Sessao } from '../../../model/sessao/sessao';
 import { Suino } from '../../../model/suino/suino';
 import { SuinoService } from '../../../service/suino.service';
 import { SessaoHistoricoDTO } from '../../../model/sessao/sessao-historico.dto';
-import { AtividadeHistoricoDTO } from '../../../model/sessao/atividade-historico.dto';
-import { SuinoUtil } from '../../../util/suino.util';
 import { SessaoSuinoHistoricoDTO } from '../../../model/sessao/sessao-suino-historico.dto';
 
 interface Dados {
@@ -37,7 +39,7 @@ export class SessaoHistoricoComponent {
     public dialogRef: MatDialogRef<SessaoHistoricoComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
-    this.spinnerOn();
+    // this.spinnerOn();
     suinoService.getAll().subscribe({
       next: (suinos) => {
         this.carregarHistorico(data, suinos);

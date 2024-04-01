@@ -53,7 +53,7 @@ export class PesoHistoricoComponent implements AfterViewInit {
         vAxis: { title: 'peso (Kg)' },
         hAxis: { title: 'Mês' },
         seriesType: 'bars',
-        series: { 2: { type: 'line' } }
+        series: { 5: { type: 'line' } }
       };
   
       const chart = new google.visualization.ComboChart(this.ComboChart.nativeElement);

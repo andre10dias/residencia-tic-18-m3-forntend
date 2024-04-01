@@ -1,11 +1,15 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+
 import { SuinoService } from '../../../service/suino.service';
-import { SuinoFormDTO } from '../../../model/suino/suino-form.dto';
+
 import { ActionEnum } from '../../../enum/action.enum';
-import { SnackbarConfigEnum } from '../../../enum/snackbar-config.enum';
+import { TimeoutConfigEnum } from '../../../enum/timeout.config.enum';
+
+import { SuinoFormDTO } from '../../../model/suino/suino-form.dto';
 
 @Component({
   selector: 'app-suino-form',
@@ -15,6 +19,8 @@ import { SnackbarConfigEnum } from '../../../enum/snackbar-config.enum';
 export class SuinoFormComponent implements OnInit {
   @ViewChild('suinoFormRef') suinoFormRef: any;
   suinoForm: FormGroup;
+
+  spinner = false;
 
   title = 'Cadastrar suino';
   btnText = 'Cadastrar';
@@ -33,6 +39,8 @@ export class SuinoFormComponent implements OnInit {
     this.btnText = data.txtButton;
     this.action = data.action;
     this.dadosItemSelecionado = data.element;
+
+    console.log('[SuinoFormComponent - constructor] dadosItemSelecionado: ', this.dadosItemSelecionado);
 
     this.suinoForm = new FormGroup({
       'id': new FormControl(null),
@@ -65,7 +73,8 @@ export class SuinoFormComponent implements OnInit {
       ]),
       'sexo': new FormControl(null, [
         Validators.required
-      ])
+      ]),
+      'createdAt': new FormControl(null)
     });
   }
 
@@ -122,14 +131,17 @@ export class SuinoFormComponent implements OnInit {
   }
 
   onSubmit(): void {
+    this.spinnerOn();
     if (this.numeroBrincoExistente) {
       this.openSnackBar('O número do brinco informado já existe.');
       this.numeroBrincoExistente = false;
+      this.spinnerOff();
       return;
     }
 
     if (this.suinoForm.invalid) {
       this.openSnackBar('Por favor, preencha o formulário corretamente.');
+      this.spinnerOff();
       return;
     }
 
@@ -142,14 +154,26 @@ export class SuinoFormComponent implements OnInit {
       this.openSnackBar('Atualizado com sucesso!');
     }
 
+    this.spinnerOff();
+
   }
 
   openSnackBar (msg: string = 'Cadastrado com sucesso!'): void {
     this.snackBar.open(msg, 'X', {
-      duration: SnackbarConfigEnum.DURATION,
+      duration: TimeoutConfigEnum.SNACK_BAR_DURATION,
       horizontalPosition: 'right',
       verticalPosition: 'top'
     });
+  }
+
+  spinnerOn(): void {
+    this.spinner = true;
+  }
+
+  spinnerOff(): void {
+    setTimeout(() => {
+      this.spinner = false;
+    }, 1000);
   }
 
 }
