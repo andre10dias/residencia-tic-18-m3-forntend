@@ -133,7 +133,6 @@ export class SuinoFormComponent implements OnInit {
 
   onSubmit(): void {
     this.spinnerOn();
-    this.dialogRef.close(false);
 
     if (this.suinoForm.invalid) {
       this.openSnackBar('Por favor, preencha o formulário corretamente.');
@@ -141,21 +140,16 @@ export class SuinoFormComponent implements OnInit {
       return;
     }
 
-    if (this.suinoForm.valid) {
-      this.dialogRef.close(true);
-
-      if (this.action == ActionEnum.CREATE) {
-        this.service.save(this.suinoForm.value);
-        this.openSnackBar();
-      } 
-      else if (this.action == ActionEnum.EDIT) {
-        this.service.edit(this.suinoForm.value);
-        this.openSnackBar('Atualizado com sucesso!');
-      }
+    if (this.action == ActionEnum.CREATE) {
+      this.service.save(this.suinoForm.value);
+      this.openSnackBar();
+    } 
+    else if (this.action == ActionEnum.EDIT) {
+      this.service.edit(this.suinoForm.value);
+      this.openSnackBar('Atualizado com sucesso!');
     }
 
     this.spinnerOff();
-
   }
 
   openSnackBar (msg: string = 'Cadastrado com sucesso!'): void {

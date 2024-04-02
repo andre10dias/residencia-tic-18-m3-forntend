@@ -69,7 +69,7 @@
     <hr>
     <mat-dialog-actions>
     <button type="submit" mat-button color="primary" 
-        (click)="pesoFormRef.ngSubmit.emit()"  [mat-dialog-close]="true"
+        (click)="pesoFormRef.ngSubmit.emit()"  [mat-dialog-close]="pesoForm.valid"
     >{{btnText}}</button>
     <button mat-button [mat-dialog-close]="false">Cancelar</button>
     </mat-dialog-actions>
