@@ -9,11 +9,11 @@ import { forkJoin } from 'rxjs';
 import { SessaoService } from '../../../service/sessao.service';
 
 import { ActionEnum } from '../../../enum/action.enum';
-import { TimeoutConfigEnum } from '../../../enum/timeout.config.enum';
 
 import { SessaoFormDTO } from '../../../model/sessao/sessao-form.dto';
 import { Suino } from '../../../model/suino/suino';
 import { Atividade } from '../../../model/sessao/atividade';
+import { TimeoutConfigEnum } from '../../../enum/timeout.config.enum';
 
 @Component({
   selector: 'app-sessao-form',
@@ -97,13 +97,15 @@ export class SessaoFormComponent {
       return;
     }
 
-    if (this.action == ActionEnum.CREATE) {
-      this.service.save(this.sessaoForm.value);
-      this.openSnackBar();
-    } 
-    else if (this.action == ActionEnum.EDIT) {
-      this.service.edit(this.sessaoForm.value);
-      this.openSnackBar('Atualizado com sucesso!');
+    if (this.sessaoForm.valid) {
+      if (this.action == ActionEnum.CREATE) {
+        this.service.save(this.sessaoForm.value);
+        this.openSnackBar();
+      } 
+      else if (this.action == ActionEnum.EDIT) {
+        this.service.edit(this.sessaoForm.value);
+        this.openSnackBar('Atualizado com sucesso!');
+      }
     }
   }
 

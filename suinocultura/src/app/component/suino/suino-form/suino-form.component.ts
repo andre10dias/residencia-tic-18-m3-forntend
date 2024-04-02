@@ -140,13 +140,15 @@ export class SuinoFormComponent implements OnInit {
       return;
     }
 
-    if (this.action == ActionEnum.CREATE) {
-      this.service.save(this.suinoForm.value);
-      this.openSnackBar();
-    } 
-    else if (this.action == ActionEnum.EDIT) {
-      this.service.edit(this.suinoForm.value);
-      this.openSnackBar('Atualizado com sucesso!');
+    if (this.suinoForm.valid) {
+      if (this.action == ActionEnum.CREATE) {
+        this.service.save(this.suinoForm.value);
+        this.openSnackBar();
+      } 
+      else if (this.action == ActionEnum.EDIT) {
+        this.service.edit(this.suinoForm.value);
+        this.openSnackBar('Atualizado com sucesso!');
+      }
     }
 
     this.spinnerOff();

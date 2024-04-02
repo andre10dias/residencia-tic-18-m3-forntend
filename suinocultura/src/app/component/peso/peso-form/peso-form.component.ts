@@ -86,25 +86,27 @@ export class PesoFormComponent implements OnInit {
         return;
       }
 
-      const peso = this.pesoForm.get('peso')?.value.replace(',', '.');
-      const suino = await this.getSuinoById(this.pesoForm.get('suino')?.value);
-    
-      if (suino === undefined) {
-        this.openSnackBar('Suíno não encontrado.');
-        this.spinnerOff();
-        return;
-      }
+      if (this.pesoForm.valid) {
+        const peso = this.pesoForm.get('peso')?.value.replace(',', '.');
+        const suino = await this.getSuinoById(this.pesoForm.get('suino')?.value);
       
-      this.pesoForm.get('peso')?.setValue(peso);
-      this.pesoForm.get('suino')?.setValue(suino);
-  
-      if (this.action == ActionEnum.CREATE) {
-        this.service.save(this.pesoForm.value);
-        this.openSnackBar();
-      } 
-      else if (this.action == ActionEnum.EDIT) {
-        this.service.edit(this.pesoForm.value);
-        this.openSnackBar('Atualizado com sucesso!');
+        if (suino === undefined) {
+          this.openSnackBar('Suíno não encontrado.');
+          this.spinnerOff();
+          return;
+        }
+        
+        this.pesoForm.get('peso')?.setValue(peso);
+        this.pesoForm.get('suino')?.setValue(suino);
+    
+        if (this.action == ActionEnum.CREATE) {
+          this.service.save(this.pesoForm.value);
+          this.openSnackBar();
+        } 
+        else if (this.action == ActionEnum.EDIT) {
+          this.service.edit(this.pesoForm.value);
+          this.openSnackBar('Atualizado com sucesso!');
+        }
       }
 
       this.spinnerOff();
