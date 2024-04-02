@@ -157,9 +157,9 @@ export class SuinoListComponent implements OnInit {
       if (label) {
         label.innerHTML = 'Itens por página:';
       }
-    }, TimeoutConfigEnum.UPDATE_LIST_DURATION);
 
-    this.spinnerOff();
+      this.spinnerOff();
+    }, TimeoutConfigEnum.UPDATE_LIST_DURATION);
   }
 
   openDialog(element?: SuinoFormDTO): void {

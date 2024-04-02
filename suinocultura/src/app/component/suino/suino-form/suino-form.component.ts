@@ -173,7 +173,7 @@ export class SuinoFormComponent implements OnInit {
   spinnerOff(): void {
     setTimeout(() => {
       this.spinner = false;
-    }, 1000);
+    }, TimeoutConfigEnum.SPINNER_DURATION);
   }
 
 }

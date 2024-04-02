@@ -12,6 +12,7 @@ import { Suino } from '../../../model/suino/suino';
 import { SuinoService } from '../../../service/suino.service';
 import { SessaoHistoricoDTO } from '../../../model/sessao/sessao-historico.dto';
 import { SessaoSuinoHistoricoDTO } from '../../../model/sessao/sessao-suino-historico.dto';
+import { TimeoutConfigEnum } from '../../../enum/timeout.config.enum';
 
 interface Dados {
   [key: string]: any; // Chaves dinâmicas correspondentes às colunas
@@ -107,7 +108,7 @@ export class SessaoHistoricoComponent {
   spinnerOff(): void {
     setTimeout(() => {
       this.spinner = true;
-    }, 1000);
+    }, TimeoutConfigEnum.SPINNER_DURATION);
   }
 
 }

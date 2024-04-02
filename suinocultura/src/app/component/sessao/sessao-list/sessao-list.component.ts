@@ -95,7 +95,7 @@ export class SessaoListComponent implements OnInit {
   }
 
   atualizarDadosLista(lista: SessaoListDTO[]): void {
-    // this.spinnerOn();
+    this.spinnerOn();
     this.listaSessao = lista;
 
     this.dataSource = new MatTableDataSource<SessaoListDTO>(this.listaSessao);
@@ -112,9 +112,10 @@ export class SessaoListComponent implements OnInit {
       if (label) {
         label.innerHTML = 'Itens por página:';
       }
+
+      this.spinnerOff();
     }, TimeoutConfigEnum.UPDATE_LIST_DURATION);
 
-    this.spinnerOff();
   }
 
   sortData(sort: Sort) {
@@ -242,7 +243,7 @@ export class SessaoListComponent implements OnInit {
   spinnerOff(): void {
     setTimeout(() => {
       this.spinner = true;
-    }, 1000);
+    }, TimeoutConfigEnum.SPINNER_DURATION);
   }
 
 }

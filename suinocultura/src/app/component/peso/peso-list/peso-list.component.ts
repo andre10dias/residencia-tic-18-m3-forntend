@@ -67,23 +67,20 @@ export class PesoListComponent {
   }
 
   carregarDadosList(): void {
-    this.spinnerOn();
-
     this.service.getAll().subscribe({
       next: pesos => {
         this.listaPesos = this.converter.toListPesoListDTOs(pesos);
         this.atualizarDadosLista(this.listaPesos);
-        this.spinnerOff();
       },
       error: error => {
         this.openSnackBar('Falha ao carregar a lista de pesos.');
         console.error(error);
-        this.spinnerOff();
       }
     });
   }
 
   atualizarDadosLista(lista: PesoListDTO[]): void {
+    this.spinnerOn();
     this.listaPesos = lista;
     this.dataSource = new MatTableDataSource<PesoListDTO>(this.listaPesos);
     this.sortedData = this.listaPesos.slice();
@@ -99,6 +96,7 @@ export class PesoListComponent {
       if (label) {
         label.innerHTML = 'Itens por página:';
       }
+      this.spinnerOff();
     }, TimeoutConfigEnum.UPDATE_LIST_DURATION);
   }
 
@@ -213,7 +211,7 @@ export class PesoListComponent {
   spinnerOff(): void {
     setTimeout(() => {
       this.spinner = false;
-    }, 1000);
+    }, TimeoutConfigEnum.SPINNER_DURATION);
   }
 
 }
