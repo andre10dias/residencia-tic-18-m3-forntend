@@ -101,12 +101,9 @@ export class SuinoService {
   }
 
   getSuinoById(id: string): Observable<Suino> {
-    console.log('[suino.service] getSuinoById typeof: ', id, typeof id);
-    console.log('[suino.service] getSuinoById: ', id);
     return this.http.get<Suino>(`${this.baseUrl}/${id}.json`).pipe(
       map((data: any) => {
         data.id = id;
-        console.log('[suino.service] getSuinoById: ', data);
         return data as Suino;
       })
     );
@@ -129,12 +126,6 @@ export class SuinoService {
         data.id = id;
         return data as Atividade;
       })
-    );
-  }
-
-  isBrincoUnico(brinco: number): Observable<boolean> {
-    return this.getSuinoByBrinco(brinco).pipe(
-        map(suino => suino === undefined)
     );
   }
 
@@ -210,8 +201,6 @@ export class SuinoService {
           sexo: edit.sexo,
           createdAt: this.util.formatarData(data.createdAt, 'dd/MM/yyyy')
         };
-
-        console.log('[Suino.service - edit] _suinoAtualizado', this._suinoAtualizado);
       },
       error: (error: any) => {
         console.log('error: ', error)
@@ -238,7 +227,6 @@ export class SuinoService {
   deletePesosAssociados(listaPesos: Peso[]) {
     try {
       if (listaPesos.length === 0) {
-        console.log('Nenhum peso para excluir.');
         return;
       }
 
@@ -287,7 +275,7 @@ export class SuinoService {
           // Se houver apenas um suíno na sessão, exclui a sessão inteira
           this.http.delete<void>(`${sessaoUrl}/${sessao.id}.json`).subscribe({
             next: () => {
-              console.log(`Sessao ${sessao.id} excluído com sucesso.`);
+              // console.log(`Sessão ${sessao.id} excluída com sucesso.`);
             },
             error: error => {
               console.error('Erro ao excluir sessao:', error);

@@ -45,7 +45,6 @@ export class PesoFormComponent implements OnInit {
       this.btnText = data.txtButton;
       this.action = data.action;
       this.dadosItemSelecionado = data.element;
-      console.log('[PesoFormComponent - constructor] dadosItemSelecionado: ', this.dadosItemSelecionado);
 
       this.pesoForm = new FormGroup({
         'id': new FormControl(null),
@@ -98,8 +97,6 @@ export class PesoFormComponent implements OnInit {
       
       this.pesoForm.get('peso')?.setValue(peso);
       this.pesoForm.get('suino')?.setValue(suino);
-
-      console.log('[PesoFormComponent - onSubmit] this.pesoForm: ', this.pesoForm.value);
   
       if (this.action == ActionEnum.CREATE) {
         this.service.save(this.pesoForm.value);

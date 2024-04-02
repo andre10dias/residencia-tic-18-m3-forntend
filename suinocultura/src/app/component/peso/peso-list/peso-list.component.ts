@@ -103,7 +103,6 @@ export class PesoListComponent {
   }
 
   openDialog(element?: PesoFormDTO): void {
-    console.log('[PesoListComponent - openDialog] element: ', element);
     const dialogRef = this.dialog.open(PesoFormComponent, {
       width: '600px',
       disableClose: true,
@@ -123,9 +122,7 @@ export class PesoListComponent {
         if (index !== -1) {
           setTimeout(() => {
             let peso = this.service.pesoAtualizado;
-            console.log('[PesoListComponent - openDialog] peso: ', peso);
             this.dataSource.data[index] = peso;
-            console.log('[PesoListComponent - openDialog] dataSource: ', this.dataSource.data);
             this.dataSource._updateChangeSubscription();
             this.dadosCarregados = true;
           }, TimeoutConfigEnum.CLOSE_DIALOG_DURATION);

@@ -89,7 +89,6 @@ export class SessaoListComponent implements OnInit {
         sessao.atividades = Array.from(new Set(sessao.atividades));
 
         let sessaoFormDTO: SessaoFormDTO = this.converter.toSessaoFormDTO(sessao);
-        console.log('[SessaoListComponent - editItem] sessaoFormDTO: ', sessaoFormDTO);
         this.openDialog(sessaoFormDTO);
       }
     });

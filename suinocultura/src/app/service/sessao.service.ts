@@ -75,15 +75,6 @@ export class SessaoService {
   }
 
   getSuinoById(id: string): Observable<Suino> {
-    if (id === typeof 'string') {
-      console.log('É string');
-      console.log('[sessao.service] getSuinoById: ', id);
-    }
-    else {
-      console.log('Não é string');
-      console.log('[sessao.service] getSuinoById: ', id, typeof id);
-    }
-
     return this.http.get<Suino>(`${this.baseUrlSuino}/${id}.json`).pipe(
       map((data: any) => {
         data.id = id;
@@ -102,7 +93,6 @@ export class SessaoService {
   }
 
   getListaSuinos(suinosId: string[]): Observable<Suino[]> {
-    console.log('[sessao.service - getListaSuinos]  Chamando getSuinoById: ', suinosId);
     const observables = suinosId.map(id => this.getSuinoById(id));
     return forkJoin(observables);
   }

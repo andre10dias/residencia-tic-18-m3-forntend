@@ -27,7 +27,7 @@ export class SuinoFormComponent implements OnInit {
   action = ActionEnum.CREATE;
   dadosItemSelecionado: SuinoFormDTO = {} as SuinoFormDTO;
 
-  numeroBrincoExistente = false;
+  brincoUnico: boolean = false;
 
   constructor(
     private snackBar: MatSnackBar,
@@ -40,21 +40,19 @@ export class SuinoFormComponent implements OnInit {
     this.action = data.action;
     this.dadosItemSelecionado = data.element;
 
-    console.log('[SuinoFormComponent - constructor] dadosItemSelecionado: ', this.dadosItemSelecionado);
-
     this.suinoForm = new FormGroup({
       'id': new FormControl(null),
       'brincoAnimal': new FormControl(null, [
         Validators.required,
         Validators.pattern(/^\d+$/),
         this.brincoRequired,
-        this.brincoNumeric, 
+        this.brincoNumeric,
       ]),
       'brincoPai': new FormControl(null, [
         Validators.required,
         Validators.pattern(/^\d+$/),
         this.brincoRequired,
-        this.brincoNumeric,  
+        this.brincoNumeric
       ]),
       'brincoMae': new FormControl(null, [
         Validators.required, 
@@ -63,7 +61,8 @@ export class SuinoFormComponent implements OnInit {
         this.brincoNumeric
       ]),
       'dataNascimento': new FormControl(null, [
-        Validators.required
+        Validators.required,
+        this.dataNascimentoInvalida
       ]),
       'dataSaida': new FormControl(null, [
         Validators.required
@@ -104,17 +103,25 @@ export class SuinoFormComponent implements OnInit {
     return null;
   }
 
-  brincoUnico(control: FormControl): { [key: string]: boolean } | null {
+  dataNascimentoInvalida(control: FormControl): { [key: string]: boolean } | null {
     const valor = control.value;
-    console.log('brincoUnico: ', valor);
+    const dataAtual = new Date();
 
-    if (valor && !this.service.isBrincoUnico(valor)) {
-      return { 'brincoUnico': true };
+    // Formatar a data de nascimento para garantir que esteja no formato correto
+    const dataNascimento = new Date(valor);
+
+    // Comparar apenas as datas, sem levar em consideração o horário
+    dataNascimento.setHours(0, 0, 0, 0);
+    dataAtual.setHours(0, 0, 0, 0);
+
+    if (dataNascimento > dataAtual) {
+        // Se a data de nascimento for maior que a data atual, é inválida
+        return { 'dataInvalida': true };
     }
-    
+
+    // Caso contrário, é válida
     return null;
   }
-  
 
   get statusList(): any[] {
     return this.service.status;
@@ -124,20 +131,9 @@ export class SuinoFormComponent implements OnInit {
     return this.service.sexo;
   }
 
-  onInputBlur(): void {
-    this.service.isBrincoUnico(this.suinoForm.value.brincoAnimal).subscribe(numeroBrincoExistente => {
-      this.numeroBrincoExistente = !numeroBrincoExistente;
-  });
-  }
-
   onSubmit(): void {
     this.spinnerOn();
-    if (this.numeroBrincoExistente) {
-      this.openSnackBar('O número do brinco informado já existe.');
-      this.numeroBrincoExistente = false;
-      this.spinnerOff();
-      return;
-    }
+    this.dialogRef.close(false);
 
     if (this.suinoForm.invalid) {
       this.openSnackBar('Por favor, preencha o formulário corretamente.');
@@ -145,13 +141,17 @@ export class SuinoFormComponent implements OnInit {
       return;
     }
 
-    if (this.action == ActionEnum.CREATE) {
-      this.service.save(this.suinoForm.value);
-      this.openSnackBar();
-    } 
-    else if (this.action == ActionEnum.EDIT) {
-      this.service.edit(this.suinoForm.value);
-      this.openSnackBar('Atualizado com sucesso!');
+    if (this.suinoForm.valid) {
+      this.dialogRef.close(true);
+
+      if (this.action == ActionEnum.CREATE) {
+        this.service.save(this.suinoForm.value);
+        this.openSnackBar();
+      } 
+      else if (this.action == ActionEnum.EDIT) {
+        this.service.edit(this.suinoForm.value);
+        this.openSnackBar('Atualizado com sucesso!');
+      }
     }
 
     this.spinnerOff();

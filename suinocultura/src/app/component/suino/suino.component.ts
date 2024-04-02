@@ -6,6 +6,7 @@ import { SuinoService } from '../../service/suino.service';
 import { SuinoFormComponent } from './suino-form/suino-form.component';
 import { ActionEnum } from '../../enum/action.enum';
 import { TimeoutConfigEnum } from '../../enum/timeout.config.enum';
+import { Suino } from '../../model/suino/suino';
 
 @Component({
   selector: 'app-suino',
@@ -14,11 +15,13 @@ import { TimeoutConfigEnum } from '../../enum/timeout.config.enum';
 })
 export class SuinoComponent {
   spinner: boolean = false;
+  listaSuinos: Suino[] = [];
 
   constructor(
     private service: SuinoService,
     public dialog: MatDialog
   ) {
+    
   }
   
   openDialog(element?: any): void {

@@ -70,9 +70,6 @@ export class SessaoFormComponent {
       ]).subscribe(([suinosData, atividadesData]) => {
         // this.suinosList = suinosData;
         // this.atividadesList = atividadesData;
-
-        console.log('[SessaoFormComponent - ngOnInit] suinosData: ', suinosData);
-        console.log('[SessaoFormComponent - ngOnInit] atividadesData: ', atividadesData);
   
         this.sessaoForm.patchValue({
           id: this.dadosItemSelecionado.id,

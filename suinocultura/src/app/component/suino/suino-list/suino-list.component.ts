@@ -103,7 +103,6 @@ export class SuinoListComponent implements OnInit {
     this.service.getAll().subscribe({
       next: suinos => {
         this.listaSuinos = this.converter.toListSuinoListDTOs(suinos);
-        console.log('[SuinoListComponent - carregardadosList] listaSuinos: ', this.listaSuinos);
         this.atualizarDadosLista(this.listaSuinos);
       },
       error: error => {
@@ -144,8 +143,6 @@ export class SuinoListComponent implements OnInit {
     //   return dateB.getTime() - dateA.getTime();
     // });
 
-    console.log('[SuinoListComponent - atualizarDadosLista] listaSuinos: ', this.listaSuinos);
-
     this.dataSource = new MatTableDataSource<SuinoListDTO>(this.listaSuinos);
     this.sortedData = this.listaSuinos.slice();
 
@@ -182,8 +179,6 @@ export class SuinoListComponent implements OnInit {
         this.spinnerOn();
         const index = this.dataSource.data.findIndex(item => item.id === element?.id);
 
-        console.log('Close dialog');
-
         if (index !== -1) {
           setTimeout(() => {
             let suino = this.service.suinoAtualizado;
@@ -199,7 +194,6 @@ export class SuinoListComponent implements OnInit {
   }
 
   editItem(id: string): void {
-    console.log('[SuinoListComponent - editItem]  Chamando getSuinoById: ', id);
     this.service.getSuinoById(id).subscribe(suino => {
       if (suino) {
         suino.id = id;
@@ -220,7 +214,6 @@ export class SuinoListComponent implements OnInit {
       this.openSnackBar();
 
       this.dataSource.data.splice(index, 1);
-      console.log('[SuinoListComponent - removeItem] dataSource: ', this.dataSource);
       this.dataSource._updateChangeSubscription();
     }
   }
@@ -316,7 +309,7 @@ export class SuinoListComponent implements OnInit {
   spinnerOff(): void {
     setTimeout(() => {
       this.spinner = false;
-    }, 1000);
+    }, TimeoutConfigEnum.SPINNER_DURATION);
   }
 
 }
