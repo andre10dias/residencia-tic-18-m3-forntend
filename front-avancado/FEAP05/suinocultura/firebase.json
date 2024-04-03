@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist/suinocultura/browser",
+    "public": "dist\\suinocultura\\browser",
     "ignore": [
       "firebase.json",
       "**/.*",
