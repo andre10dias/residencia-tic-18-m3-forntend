@@ -8,5 +8,8 @@
 ng new minhaApp --no-standalone --routing --ssr=false
 ```
 ```
+ng new standaloneOnly –standalone
+```
+```
 ng add @angular/material
 ```
