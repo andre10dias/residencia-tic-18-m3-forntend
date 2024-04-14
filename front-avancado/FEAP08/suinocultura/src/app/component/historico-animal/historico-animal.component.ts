@@ -18,6 +18,8 @@ import { PesoChartDTO } from '../../model/peso/peso-chart.dto';
 import { PesoHistoricoComponent } from '../peso/peso-historico/peso-historico.component';
 import { MatDialog } from '@angular/material/dialog';
 import { PesoConverter } from '../../model/peso/peso.converter';
+import { AtividadeConverter } from '../../model/sessao/atividade-converter';
+import { SessaoHistoricoGraficoComponent } from '../sessao/sessao-historico-grafico/sessao-historico-grafico.component';
 
 @Component({
   selector: 'app-historico-animal',
@@ -37,7 +39,8 @@ export class HistoricoAnimalComponent {
     private suinoService: SuinoService,
     private pesoService: PesoService,
     private sessaoService: SessaoService,
-    private converter: PesoConverter,
+    private pesoConverter: PesoConverter,
+    private atividadeConverter: AtividadeConverter,
     private util: SuinoUtil,
     public dialog: MatDialog,
   ) {
@@ -112,7 +115,7 @@ export class HistoricoAnimalComponent {
   pesoHistorico(): void {
     if (this.suinoSelecionado) {
       this.pesoService.getPesosBySuinoId(this.suinoSelecionado.id).subscribe(pesos => {
-        const pesoChart: PesoChartDTO[] = this.converter.toListPesoChartDTOs(pesos);
+        const pesoChart: PesoChartDTO[] = this.pesoConverter.toListPesoChartDTOs(pesos);
         this.openHistoricoDialog(pesoChart, PesoHistoricoComponent);
       });
     }
@@ -120,11 +123,10 @@ export class HistoricoAnimalComponent {
 
   sessaoHistorico(): void {
     if (this.suinoSelecionado) {
-      console.error('Ainda não implementado');
-      // this.sessaoService.getSessoesBySuinoId(this.suinoSelecionado.id).subscribe(sessoes => {
-      //   const sessaoChart: any[] = this.converter.toListSessaoChartDTOs(sessoes);
-      //   this.openHistoricoDialog(sessaoChart, SessaoHistoricoComponent);
-      // });
+      this.sessaoService.getSessoesBySuinoId(this.suinoSelecionado.id).subscribe(sessoes => {
+        const sessaoChart: any[] = this.atividadeConverter.toListAtividadeChartDTOs(this.suinoSelecionado, sessoes);
+        this.openHistoricoDialog(sessaoChart, SessaoHistoricoGraficoComponent);
+      });
     }
   }
 

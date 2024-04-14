@@ -27,13 +27,15 @@ import { SessaoComponent } from './sessao.component';
 import { SessaoListComponent } from './sessao-list/sessao-list.component';
 import { SessaoFormComponent } from './sessao-form/sessao-form.component';
 import { SessaoHistoricoComponent } from './sessao-historico/sessao-historico.component';
+import { SessaoHistoricoGraficoComponent } from './sessao-historico-grafico/sessao-historico-grafico.component';
 
 @NgModule({
   declarations: [
     SessaoComponent,
     SessaoListComponent,
     SessaoFormComponent,
-    SessaoHistoricoComponent
+    SessaoHistoricoComponent,
+    SessaoHistoricoGraficoComponent
   ],
   imports: [
     CommonModule,
