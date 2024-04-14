@@ -46,7 +46,6 @@ export class HistoricoAnimalComponent {
   ) {
     this.suinoService.getAll().subscribe({
       next: (suinos) => {
-        console.log('suinos: ', suinos);
         this.suinosList = suinos;
       },
       error: (error) => {
