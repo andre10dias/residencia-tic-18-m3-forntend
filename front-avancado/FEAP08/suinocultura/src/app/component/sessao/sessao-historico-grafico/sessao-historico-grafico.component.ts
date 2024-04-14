@@ -1,5 +1,4 @@
 import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
-import { SessaoService } from '../../../service/sessao.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SessaoFormDTO } from '../../../model/sessao/sessao-form.dto';
 import { AtividadeChartDTO } from '../../../model/sessao/atividade-chart.dto';
@@ -20,7 +19,6 @@ export class SessaoHistoricoGraficoComponent {
   brincoAnimal: number;
 
   constructor(
-    private service: SessaoService,
     public dialogRef: MatDialogRef<SessaoHistoricoGraficoComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {

@@ -9,27 +9,36 @@ import { Suino } from "../suino/suino";
 })
 export class AtividadeConverter {
     toListAtividadeChartDTOs(suino: Suino | undefined, listaSessoesDoSuino: Sessao[]): AtividadeChartDTO[] {
-
         let atividadesChartDTO: AtividadeChartDTO[] = [];
-        let atividade: AtividadeChartDTO;
-
+        let atividadesMap: Map<string, Atividade> = new Map<string, Atividade>(); // Usando um Map para evitar elementos repetidos
+    
         if (suino) {
             listaSessoesDoSuino.forEach(sessao => {
-                sessao.atividades.forEach(data => {
-                    atividade = {
-                        id: data.id,
-                        brincoAnimal: suino.brincoAnimal,
-                        nomeAtividade: data.nome,
-                        qtdRepeticoes: this.getRepeticoesAtividadeBySuino(data, listaSessoesDoSuino)
+                sessao.atividades.forEach(atividade => {
+                    const atividadeId = atividade.id;
+    
+                    if (!atividadesMap.has(atividadeId)) {
+                        atividadesMap.set(atividadeId, atividade);
                     }
-        
-                    atividadesChartDTO.push(atividade);
                 });
             });
-        }
+    
+            // Convertendo o Map para um array de AtividadeChartDTO
+            atividadesMap.forEach(atividade => {
+                const atividadeChartDTO: AtividadeChartDTO = {
+                    id: atividade.id,
+                    brincoAnimal: suino.brincoAnimal,
+                    nomeAtividade: atividade.nome,
+                    qtdRepeticoes: this.getRepeticoesAtividadeBySuino(atividade, listaSessoesDoSuino)
+                };
 
+                atividadesChartDTO.push(atividadeChartDTO);
+            });
+        }
+    
         return atividadesChartDTO;
     }
+    
 
     private getRepeticoesAtividadeBySuino(atividade: Atividade, listaSessoesDoSuino: Sessao[]): number {
         let qtdRepeticoes = 0;
