@@ -1,0 +1,18 @@
+<div class="container">
+  <form *ngIf="formDinamico" [formGroup]="formDinamico" (ngSubmit)="onSubmit()">
+    <div class="title">
+      <h2>{{title}}</h2>
+    </div>
+  
+    <div [ngClass]="{'check': campo.tipo === 'checkbox'}" *ngFor="let campo of campos">
+      <label>{{campo.rotulo}}</label>
+      <div>
+        <input [type]="campo.tipo" [formControlName]="campo.nome">
+      </div>
+    </div>
+  
+    <div class="btn">
+      <button type="submit">Enviar</button>
+    </div>
+  </form>
+</div>

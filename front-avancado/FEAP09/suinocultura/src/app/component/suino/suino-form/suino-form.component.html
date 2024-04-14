@@ -1,0 +1,151 @@
+<div class="dialog-header">
+    <div class="dialog-close">
+      <button mat-button mat-dialog-close>X</button>
+    </div>
+    <div class="dialog-title">
+      <h2>{{title}}</h2>
+    </div>
+  </div>
+  <div class="dialog-conteiner">
+      <mat-dialog-content>
+        <form [formGroup]="suinoForm" #suinoFormRef="ngForm" (ngSubmit)="onSubmit()">
+            <input type="hidden" name="id" formControlName="id">
+            <input type="hidden" name="createdAt" formControlName="createdAt">
+        
+            <div class="row-1">
+                <div class="form-group">
+                    <mat-label>Brinco animal</mat-label>
+                    <div id="brinco-animal">
+                        <input matInput formControlName="brincoAnimal" maxlength="3"
+                            [ngClass]="{'invalid-field': suinoForm.get('brincoAnimal')?.invalid && suinoForm.get('brincoAnimal')?.touched}"
+                        >
+                        <div>
+                            <mat-error *ngIf="!suinoForm.get('brincoAnimal')?.valid 
+                                && suinoForm.get('brincoAnimal')?.touched && suinoForm.get('brincoAnimal')?.hasError('required')"
+                            >Campo obrigatório.</mat-error>
+                            <mat-error *ngIf="!suinoForm.get('brincoAnimal')?.valid 
+                                && suinoForm.get('brincoAnimal')?.touched && suinoForm.get('brincoAnimal')?.hasError('numeric')"
+                            >Somente números.</mat-error>
+                            <mat-error *ngIf="!suinoForm.get('brincoAnimal')?.valid 
+                                && suinoForm.get('brincoAnimal')?.touched && suinoForm.get('brincoAnimal')?.hasError('single')"
+                            >Já existe um animal com esse brinco.</mat-error>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <mat-label>Brinco pai</mat-label>
+                    <div id="brinco-pai">
+                        <input matInput formControlName="brincoPai" maxlength="3" 
+                            [ngClass]="{'invalid-field': suinoForm.get('brincoPai')?.invalid && suinoForm.get('brincoPai')?.touched}"
+                        >
+                        <div>
+                            <mat-error *ngIf="!suinoForm.get('brincoPai')?.valid 
+                                && suinoForm.get('brincoPai')?.touched && suinoForm.get('brincoPai')?.hasError('required')"
+                            >Campo obrigatório.</mat-error>
+                            <mat-error *ngIf="!suinoForm.get('brincoPai')?.valid 
+                                && suinoForm.get('brincoPai')?.touched && suinoForm.get('brincoPai')?.hasError('numeric')"
+                            >Somente números.</mat-error>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <mat-label>Brinco mãe</mat-label>
+                    <div id="brinco-mae">
+                        <input matInput formControlName="brincoMae" maxlength="3" 
+                            [ngClass]="{'invalid-field': suinoForm.get('brincoMae')?.invalid && suinoForm.get('brincoMae')?.touched}"
+                        >
+                        <div>
+                            <mat-error *ngIf="!suinoForm.get('brincoMae')?.valid 
+                                && suinoForm.get('brincoMae')?.touched && suinoForm.get('brincoMae')?.hasError('required')"
+                            >Campo obrigatório.</mat-error>
+                            <mat-error *ngIf="!suinoForm.get('brincoMae')?.valid 
+                                && suinoForm.get('brincoMae')?.touched && suinoForm.get('brincoMae')?.hasError('numeric')"
+                            >Somente números.</mat-error>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row-2">
+                <div class="form-group">
+                    <mat-label>Data nascimento</mat-label>
+                    <div>
+                        <input matInput type="date" formControlName="dataNascimento"
+                            [ngClass]="{'invalid-field': suinoForm.get('dataNascimento')?.invalid && suinoForm.get('dataNascimento')?.touched}"
+                        >
+                        <div id="data-nascimento">
+                            <mat-error *ngIf="!suinoForm.get('dataNascimento')?.valid && suinoForm.get('dataNascimento')?.touched 
+                                && suinoForm.get('dataNascimento')?.hasError('required')"
+                            >Campo obrigatório.</mat-error>
+                            <mat-error *ngIf="!suinoForm.get('dataNascimento')?.valid 
+                                && suinoForm.get('dataNascimento')?.touched && suinoForm.get('dataNascimento')?.hasError('dataInvalida')"
+                            >Data nascimento não deve ser maior que a atual.</mat-error>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <mat-label>Data saída</mat-label>
+                    <div>
+                        <input matInput type="date" formControlName="dataSaida"
+                            [ngClass]="{'invalid-field': suinoForm.get('dataSaida')?.invalid && suinoForm.get('dataSaida')?.touched}"
+                        >
+                        <div id="data-saida">
+                            <mat-error *ngIf="!suinoForm.get('dataSaida')?.valid && suinoForm.get('dataSaida')?.touched"
+                            >Campo obrigatório.</mat-error>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="row-3">
+                <div class="form-group">
+                    <mat-label>Status</mat-label>
+                    <div id="status">
+                        <mat-select formControlName="status" placeholder="Selecione..."
+                            [ngClass]="{'invalid-field': suinoForm.get('status')?.invalid 
+                                && suinoForm.get('status')?.touched}"
+                        >
+                            @for (status of statusList; track status) {
+                                <mat-option [value]="status.value">{{status.viewValue}}</mat-option>
+                            }
+                        </mat-select>
+                        <div>
+                            <mat-error *ngIf="!suinoForm.get('status')?.valid && suinoForm.get('status')?.touched"
+                            >Campo obrigatório.</mat-error>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <mat-label>Sexo</mat-label>
+                    <div id="sexo">
+                        <mat-select formControlName="sexo" placeholder="Selecione..."
+                            [ngClass]="{'invalid-field': suinoForm.get('sexo')?.invalid 
+                                && suinoForm.get('sexo')?.touched}"
+                        >
+                            @for (sexo of sexoList; track sexo) {
+                                <mat-option [value]="sexo.value">{{sexo.viewValue}}</mat-option>
+                            }
+                        </mat-select>
+                        <div>
+                            <mat-error *ngIf="!suinoForm.get('sexo')?.valid && suinoForm.get('sexo')?.touched"
+                            >Campo obrigatório.</mat-error>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        
+      </mat-dialog-content>
+      <hr>
+      <mat-dialog-actions>
+        <button type="submit" mat-button color="primary"
+            (click)="suinoFormRef.ngSubmit.emit()" [mat-dialog-close]="suinoForm.valid"  
+        >{{btnText}}</button>
+
+        <button mat-button [mat-dialog-close]="false">Cancelar</button>
+      </mat-dialog-actions>
+</div>

@@ -1,0 +1,64 @@
+<div class="search">
+    <form [formGroup]="suinoSearch" (ngSubmit)="onSubmit()">
+        <div class="row-1">
+            <div class="form-group">
+                <mat-label>Brinco pai</mat-label>
+                <div id="brinco-pai">
+                    <input matInput formControlName="brincoPai" maxlength="3">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <mat-label>Brinco mãe</mat-label>
+                <div id="brinco-mae">
+                    <input matInput formControlName="brincoMae" maxlength="3">
+                </div>
+            </div>
+        </div>
+
+        <div class="row-2">
+            <div class="form-group">
+                <mat-label>Data nascimento</mat-label>
+                <div>
+                    <input matInput type="date" formControlName="dataNascimento">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <mat-label>Data saída</mat-label>
+                <div>
+                    <input matInput type="date" formControlName="dataSaida">
+                </div>
+            </div>
+        </div>
+
+        <div class="row-3">
+            <div class="form-group">
+                <mat-label>Status</mat-label>
+                <div id="status">
+                    <mat-select formControlName="status" placeholder="Selecione...">
+                        @for (status of statusList; track status) {
+                            <mat-option [value]="status.value">{{status.viewValue}}</mat-option>
+                        }
+                    </mat-select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <mat-label>Sexo</mat-label>
+                <div id="sexo">
+                    <mat-select formControlName="sexo" placeholder="Selecione...">
+                        @for (sexo of sexoList; track sexo) {
+                            <mat-option [value]="sexo.value">{{sexo.viewValue}}</mat-option>
+                        }
+                    </mat-select>
+                </div>
+            </div>
+        </div>
+
+        <div class="btn-search">
+            <button type="submit" mat-button color="primary">Buscar</button>
+            <button type="reset" mat-button color="primary" (click)="reset()">Limpar</button>
+        </div>
+    </form>
+</div>

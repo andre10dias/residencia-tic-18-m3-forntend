@@ -1,0 +1,14 @@
+<div id="peso-list">
+    <div class="header">
+      <h2>Lista de pesos</h2>
+      <div class="button-container">
+        <button mat-button color="primary" (click)="openDialog()">Cadastrar peso</button>
+      </div>
+    </div>
+    <div class="content">
+        <div class="spinner loading" *ngIf="!spinner">
+          <mat-spinner></mat-spinner>
+        </div>
+        <app-peso-list class="row-2"></app-peso-list>
+    </div>
+</div>
