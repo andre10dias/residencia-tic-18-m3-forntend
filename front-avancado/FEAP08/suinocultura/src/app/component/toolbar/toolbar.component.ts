@@ -29,6 +29,10 @@ export class ToolbarComponent {
     this.route.navigate(['/sessao']);
   }
 
+  rotaHistoricoAnimal() {
+    this.route.navigate(['/historicoAnimal']);
+  }
+
   sair() {
     localStorage.clear();
     this.service.logout();

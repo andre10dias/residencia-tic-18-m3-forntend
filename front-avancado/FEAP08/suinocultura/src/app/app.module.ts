@@ -15,13 +15,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { DialogModule } from './component/dialog/dialog.module';
 import { SuinoModule } from './component/suino/suino.module';
 import { PesoModule } from './component/peso/peso.module';
+import { SessaoModule } from './component/sessao/sessao.module';
+import { HistoricoAnimalModule } from './component/historico-animal/historico-animal.module';
 
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './component/toolbar/toolbar.component';
 import { FooterComponent } from './component/footer/footer.component';
 import { HomeComponent } from './component/home/home.component';
 import { LoginComponent } from './component/login/login.component';
-import { SessaoModule } from './component/sessao/sessao.module';
 
 
 @NgModule({
@@ -46,7 +47,8 @@ import { SessaoModule } from './component/sessao/sessao.module';
     DialogModule,
     SuinoModule,
     PesoModule,
-    SessaoModule
+    SessaoModule,
+    HistoricoAnimalModule
   ],
   providers: [
     provideAnimationsAsync()
