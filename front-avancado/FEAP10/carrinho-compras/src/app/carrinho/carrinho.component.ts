@@ -1,7 +1,7 @@
 import { Component, computed, effect, signal, OnInit } from '@angular/core';
 import { Item } from '../model/item';
 import { CarrinhoService } from '../service/carrinho.service';
-import writableSignal from 's-js';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-carrinho',
@@ -9,30 +9,53 @@ import writableSignal from 's-js';
   styleUrls: ['./carrinho.component.css']
 })
 export class CarrinhoComponent implements OnInit {
-  listaItens = signal<Item[]>([]);
+
+  listaItensCarrinho = signal<Item[]>([]);
   quantidades = signal<number[]>([]);
   qtdeItens: string = '';
-  total = writableSignal<number>(0);
+  total = signal<number>(0);
 
-  constructor(private service: CarrinhoService) {}
+  constructor(
+    private service: CarrinhoService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    this.listaItens.set(this.service.listaItems);
+    this.listaItensCarrinho.set(this.service.listaItemsCarrinho);
     this.quantidades.set(this.service.listaQtdes);
 
     this.calcularTotal();
   }
 
-  calcularTotal(): void {
-    this.total = computed(() => {
-      const items = this.listaItens();
-      return items.reduce((acc: any, item: any) => acc + item.price, 0);
-    }); 
+  desmarcarTodos(): void {
+    this.listaItensCarrinho().forEach(item => {
+      this.updateCheckbox(item, false);
+    });
   }
-  
+
+  updateCheckbox(item: Item, isChecked: boolean) {
+    item.quantity = isChecked ? 1 : 0;
+    this.calcularTotal();
+  }
+
+  calcularTotal(): void {
+    const items = this.listaItensCarrinho();
+    this.total.set(items.reduce((acc: any, item: any) => acc + item.price * item.quantity, 0));
+    this.updateQtdes(items);
+  }
 
   updateQuantity(item: Item, quantity: number): void {
     item.quantity = quantity;
     this.calcularTotal();
   }
+
+  updateQtdes(items: Item[]): void {
+    const item = items.reduce((acc: any, item: any) => acc + item.quantity, 0);      
+    this.qtdeItens = item > 0 ? `(${item} produtos): ` : '';
+  }
+
+  produtos() {
+    this.router.navigate(['/produtos']);
+  }
+
 }

@@ -1,0 +1,97 @@
+.container {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 1fr;
+    grid-template-rows: 80px 1fr;
+    padding: 10px;
+}
+
+h1 {
+    margin-bottom: 1px;
+}
+
+a, a:link, a:visited {
+    text-decoration: none;
+    color: #007185;
+}
+
+a:hover {
+    color: -webkit-link;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+/* 
+.lista-items {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+}
+
+#item0 {
+    grid-column-start: 1;
+}
+
+#item1 {
+    grid-column-start: 2;
+}
+
+#item2 {
+    grid-column-start: 3;
+}
+
+#item3 {
+    grid-column-start: 4;
+}
+
+#item4 {
+    grid-column-start: 5;
+}
+
+.item {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 180px;
+    grid-template-rows: 1fr 130px 1fr;
+    margin-top: 50px;
+} */
+
+.form-group > mat-label {
+    padding: 3px;
+}
+
+#qtd {
+    width: 40px;
+}
+
+.lista-items {
+    display: flex;
+    flex-wrap: wrap;
+    width: 182px;
+}
+
+.items {
+    flex: 0 0 auto;
+    width: calc(33.33% - 10px); /* Calcula a largura de cada item com base no número de itens por linha */
+    margin-right: 10px; /* Espaçamento entre os itens */
+    margin-bottom: 10px; /* Espaçamento entre as linhas */
+}
+
+img {
+    width: 180px;
+    height: 260px;
+    border: none;
+}
+
+.name {
+    color: #0F1111;
+}
+
+.price {
+    margin: 30px;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 26px;
+    color: #0F1111;
+}
