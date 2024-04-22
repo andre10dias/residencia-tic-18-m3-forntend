@@ -1,0 +1,135 @@
+.container {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 1fr;
+    grid-template-rows: 40px 80px 20px 1fr 1fr;
+    padding: 10px;
+}
+
+.header-price > div, .price {
+    display: flex;
+    justify-content: flex-end;
+}
+
+h1 {
+    margin-bottom: 1px;
+}
+
+a, a:link, a:visited {
+    text-decoration: none;
+    color: #007185;
+}
+
+a:hover {
+    color: -webkit-link;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+hr {
+    border: 1px solid #D5D9D9;
+}
+
+.checkbox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.items {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 40px 200px 1fr;
+    grid-template-rows: 1fr;
+    margin-top: 50px;
+}
+
+img {
+    width: 180px;
+    height: 260px;
+    border: none;
+}
+
+.details-group {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 1fr;
+    grid-template-rows: 8fr 1fr;
+    margin-left: 10px;
+}
+
+.details {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 8fr 1fr;
+    grid-template-rows: 1fr;
+}
+
+.name {
+    display: inline-block;
+    width: 100%;
+    white-space: normal;
+    box-sizing: border-box;
+    line-height: 1.3em;
+    max-height: 2.6em;
+    font-size: 18px;
+    word-break: normal;
+    line-height: 24px;
+    color: #0F1111;
+}
+
+.price {
+    font-weight: 700 !important;
+    font-size: 18px !important;
+}
+
+.amount {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 92px 1fr;
+    grid-template-rows: 1fr;
+}
+
+.form-group {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 35px 1fr;
+    grid-template-rows: 1fr;
+    border: 1px solid #D5D9D9;
+    background: #F0F2F2;
+    border-radius: 5px;
+    width: 90px;
+}
+
+.form-group > mat-label {
+    padding: 3px;
+}
+
+#qtd {
+    width: 40px;
+}
+
+.action {
+    padding-top: 3px;
+}
+
+.subtotal {
+    margin-bottom: 18px;
+}
+
+.subtotal > div {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    font-size: 18px !important;
+    line-height: 24px !important;
+}
+
+.empty {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30%;
+    font-size: 22px;
+    color: #0F1111;
+}

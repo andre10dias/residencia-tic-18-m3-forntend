@@ -1,0 +1,56 @@
+.container {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 1fr;
+    grid-template-rows: 80px 1fr;
+    padding: 10px;
+}
+
+h1 {
+    margin-bottom: 1px;
+}
+
+a, a:link, a:visited {
+    text-decoration: none;
+    color: #007185;
+}
+
+a:hover {
+    color: -webkit-link;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.form-group > mat-label {
+    padding: 3px;
+}
+
+#qtd {
+    width: 40px;
+}
+
+.lista-items {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 182px 182px 182px 182px 182px;
+    grid-template-rows: 1fr;
+    padding-top: 10px;
+}
+
+img {
+    width: 180px;
+    height: 260px;
+    border: none;
+}
+
+.name {
+    color: #0F1111;
+}
+
+.price {
+    margin: 30px;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 26px;
+    color: #0F1111;
+}

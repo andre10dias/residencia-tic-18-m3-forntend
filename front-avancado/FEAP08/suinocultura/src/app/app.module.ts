@@ -16,7 +16,7 @@ import { DialogModule } from './component/dialog/dialog.module';
 import { SuinoModule } from './component/suino/suino.module';
 import { PesoModule } from './component/peso/peso.module';
 import { SessaoModule } from './component/sessao/sessao.module';
-import { HistoricoAnimalModule } from './component/historico-animal/historico-animal.module';
+// import { HistoricoAnimalModule } from './component/historico-animal/historico-animal.module';
 
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './component/toolbar/toolbar.component';
@@ -48,7 +48,7 @@ import { LoginComponent } from './component/login/login.component';
     SuinoModule,
     PesoModule,
     SessaoModule,
-    HistoricoAnimalModule
+    // HistoricoAnimalModule
   ],
   providers: [
     provideAnimationsAsync()
