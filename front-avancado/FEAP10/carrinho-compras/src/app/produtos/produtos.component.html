@@ -6,23 +6,26 @@
         </div>
         <hr>
     </div>
-    <div class="lista-items" *ngFor="let item of listaItens(); let i = index">
-        <div [id]="'item'+i.toString()" class="item">
-            <div class="image">
-                <img src="{{item.imgURL}}" alt="{{item.name}}">
-            </div>
-            <div class="details-group">
-                <div class="details">
-                    <div class="name">
-                        {{item.name}}
-                    </div>
-                    <div class="price">
-                        {{item.price | currency: 'R$ ' }}
-                    </div>
+    <div class="lista-items">
+        <div *ngFor="let item of listaItens(); let i = index">
+            <div [id]="'item'+i.toString()" class="item">
+                <div class="image">
+                    <img src="{{item.imgURL}}" alt="{{item.name}}">
                 </div>
-            </div>
-            <div>
-                <button mat-flat-button color="primary" (click)="add(item)">Adicionar ao carrinho</button>
+                <div class="details-group">
+                    <div class="details">
+                        <div class="name">
+                            {{item.name}}
+                        </div>
+                        <div class="price">
+                            {{item.price | currency: 'R$ ' }}
+                        </div>
+                    </div>
+                    
+                </div>
+                <div>
+                    <button mat-flat-button color="primary" (click)="add(item)">Adicionar ao carrinho</button>
+                </div>
             </div>
         </div>
     </div>

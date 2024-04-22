@@ -11,28 +11,28 @@ export class CarrinhoService {
     {
       id: 1,
       name: 'Entendendo Algoritmos: Um guia ilustrado para programação',
-      price: 10,
+      price: 63.80,
       quantity: 0,
       imgURL: './assets/img/algoritmos.jpg'
     },
     {
       id: 2,
       name: 'Estrutura de Dados e Algoritmos com Javascript',
-      price: 10,
+      price: 92.70,
       quantity: 0,
       imgURL: './assets/img/estrutura_dados.jpg'
     },
     {
       id: 3,
       name: 'Expressões Regulares: Uma Abordagem Divertida',
-      price: 10,
+      price: 59.59,
       quantity: 0,
       imgURL: './assets/img/expressoes_regulares.jpg'
     },
     {
       id: 4,
       name: 'Lógica de Programação e Algoritmos com Javascript',
-      price: 10,
+      price: 75.70,
       quantity: 0,
       imgURL: './assets/img/logica_programacao.jpg'
     },
@@ -43,19 +43,24 @@ export class CarrinhoService {
   adicionarItemCarrinho(item: Item) {
     let itemCarrinho = this.listaItemsCarrinho.find(x => x.id == item.id);
 
-    console.log(itemCarrinho);
-    console.log(item);
-
     if (itemCarrinho) {
-        // Se o item já estiver no carrinho, adicione apenas a quantidade do item
         itemCarrinho.quantity += item.quantity;
+        // console.log('Item no carrinho: ', itemCarrinho);
+        // console.log('Item adicionado: ', item);
     } 
     else {
         item.quantity = 1;
         this.listaItemsCarrinho.push({ ...item, quantity: item.quantity });
+        // console.log('Item no carrinho: ', itemCarrinho);
+        // console.log('Item adicionado: ', item);
     }
   }
 
-
+  excluirItemCarrinho(item: Item) {
+    const index = this.listaItemsCarrinho.findIndex(x => x.id === item.id);
+    if (index !== -1) {
+        this.listaItemsCarrinho.splice(index, 1);
+    }
+  }
 
 }

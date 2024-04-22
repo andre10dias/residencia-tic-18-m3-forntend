@@ -83,6 +83,13 @@ img {
     font-size: 18px !important;
 }
 
+.amount {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 92px 1fr;
+    grid-template-rows: 1fr;
+}
+
 .form-group {
     display: grid;
     gap: 10px;
@@ -100,6 +107,10 @@ img {
 
 #qtd {
     width: 40px;
+}
+
+.action {
+    padding-top: 3px;
 }
 
 .subtotal {

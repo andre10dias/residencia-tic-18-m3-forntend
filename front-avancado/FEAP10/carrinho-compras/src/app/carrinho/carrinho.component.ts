@@ -33,6 +33,11 @@ export class CarrinhoComponent implements OnInit {
     });
   }
 
+  excluir(item: Item): void {
+    this.service.excluirItemCarrinho(item);
+    this.calcularTotal();
+  }
+
   updateCheckbox(item: Item, isChecked: boolean) {
     item.quantity = isChecked ? 1 : 0;
     this.calcularTotal();

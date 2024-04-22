@@ -21,42 +21,6 @@ a:hover {
     text-decoration: underline;
 }
 
-/* 
-.lista-items {
-    display: grid;
-    gap: 10px;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr;
-}
-
-#item0 {
-    grid-column-start: 1;
-}
-
-#item1 {
-    grid-column-start: 2;
-}
-
-#item2 {
-    grid-column-start: 3;
-}
-
-#item3 {
-    grid-column-start: 4;
-}
-
-#item4 {
-    grid-column-start: 5;
-}
-
-.item {
-    display: grid;
-    gap: 10px;
-    grid-template-columns: 180px;
-    grid-template-rows: 1fr 130px 1fr;
-    margin-top: 50px;
-} */
-
 .form-group > mat-label {
     padding: 3px;
 }
@@ -66,16 +30,11 @@ a:hover {
 }
 
 .lista-items {
-    display: flex;
-    flex-wrap: wrap;
-    width: 182px;
-}
-
-.items {
-    flex: 0 0 auto;
-    width: calc(33.33% - 10px); /* Calcula a largura de cada item com base no número de itens por linha */
-    margin-right: 10px; /* Espaçamento entre os itens */
-    margin-bottom: 10px; /* Espaçamento entre as linhas */
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 182px 182px 182px 182px 182px;
+    grid-template-rows: 1fr;
+    padding-top: 10px;
 }
 
 img {
