@@ -1,0 +1,103 @@
+.task-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.task-item {
+  padding: 10px;
+  margin: 10px 0;
+  background-color: #ffebcd;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+  font-size: 1.2em;
+  color: #ff7f50;
+  transition: all 0.3s ease;
+}
+
+.task-item:hover {
+  background-color: #ffe4b5;
+}
+
+.task-item:active {
+  background-color: #ffdead;
+  box-shadow: 0 2px 2px rgba(0,0,0,0.15);
+}
+
+button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  font-size: 0.8em;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.update-button, .save-button {
+  background-color: #008000;
+}
+
+.update-button:hover, .save-button:hover {
+  background-color: #006600;
+}
+
+.update-button:active, .save-button:active {
+  background-color: #004400;
+  box-shadow: 0 2px 2px rgba(0,0,0,0.15);
+}
+
+.remove-button {
+  background-color: #ff0000;
+}
+
+.remove-button:hover {
+  background-color: #cc0000;
+}
+
+.remove-button:active {
+  background-color: #990000;
+  box-shadow: 0 2px 2px rgba(0,0,0,0.15);
+}
+
+/* Estilos para o formulário de atualização */
+.form-update {
+  display: none;
+  position: fixed; /* Para manter o formulário centralizado independentemente do scroll */
+  top: 50%; /* Coloca o topo do formulário no meio da tela */
+  left: 50%; /* Coloca a esquerda do formulário no meio da tela */
+  transform: translate(-50%, -50%); /* Move o formulário de volta metade da sua largura e altura */
+  margin-top: 100px;
+  border: 1px solid;
+  width: 500px;
+  padding: 10px;
+  background-color: #ffebcd;
+  color: #ff7f50;
+}
+
+.form-update h2 {
+  margin-top: 0;
+  text-align: center;
+}
+
+.form-update input {
+  margin-bottom: 10px;
+  width: calc(100% - 20px); /* Usa 100% da largura do formulário, subtraindo a margem esquerda e direita */
+  padding: 10px;
+  font-size: 1em;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  flex-grow: 1;
+}
+
+/* Estilos para os botões */
+.save-button {
+  display: block;
+  margin-left: 381px !important;
+  margin-top: 10px;
+  height: 30px;
+}
