@@ -1,0 +1,16 @@
+
+<ul class="task-list">
+  <li *ngFor="let tarefa of tarefas" class="task-item">
+    {{ tarefa.descricao }}
+    <button (click)="showForm(tarefa)" class="update-button">Atualizar</button>
+    <button (click)="removeTarefa(tarefa.id)" class="remove-button">Remover</button>
+  </li>
+</ul>
+
+<div id="form-update" class="form-update">
+  <h2>Atualizar Tarefa</h2>
+  <input type="text" id="nova-descricao" class="nova-descricao" 
+    placeholder="Nova descrição" [value]="tarefaSelecionada.descricao"
+  >
+  <button (click)="atualizarTarefa()" class="save-button">Salvar mudanças</button>
+</div>
