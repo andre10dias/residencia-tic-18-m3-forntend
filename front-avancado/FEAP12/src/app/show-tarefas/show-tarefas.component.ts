@@ -1,11 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TarefaState } from '../store/tarefa.reducer';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { selectorSelecionaTarefa } from '../store/tarefa.seletors';
 import { Tarefa } from '../tarefa.model';
-import { removerTarefa, atualizarTarefa } from '../store/tarefa.actions';
+import { tarefasStore } from '../store/tarefa.store';
 
 @Component({
   selector: 'app-show-tarefas',
@@ -15,22 +11,12 @@ import { removerTarefa, atualizarTarefa } from '../store/tarefa.actions';
   styleUrls: ['./show-tarefas.component.css']
 })
 export class ShowTarefasComponent {
-  tarefas: Tarefa[] = [{id: '1', descricao: 'Descrição 1'},];
-  tasks$!: Observable<TarefaState>;
-
   tarefaSelecionada: Tarefa = { id: '', descricao: '' };
 
-  constructor(private store:Store<{tarefas: TarefaState}>) { }
-
-  ngOnInit() {
-    this.tasks$ = this.store.select(selectorSelecionaTarefa);
-    this.tasks$.subscribe((t) => {  
-      this.tarefas = t.tarefas;
-    });
-  }
+  readonly storeTarefa = inject(tarefasStore);
 
   removeTarefa(id: string) {
-    this.store.dispatch(removerTarefa({id: id}));
+    this.storeTarefa.removerTarefa(id);
   }
 
   showForm(tarefa: Tarefa) {
@@ -44,7 +30,7 @@ export class ShowTarefasComponent {
 
   atualizarTarefa() {
     const novaDescricao = (document.getElementById('nova-descricao') as HTMLInputElement).value;
-    this.store.dispatch(atualizarTarefa({id: this.tarefaSelecionada.id, descricao: novaDescricao}));
+    this.storeTarefa.atualizarTarefa(this.tarefaSelecionada.id, novaDescricao);
     this.hideForm();
   }
 

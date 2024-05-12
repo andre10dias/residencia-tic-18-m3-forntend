@@ -1,10 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Store } from '@ngrx/store';
-import { TarefaState } from '../store/tarefa.reducer';
-import { adicionarTarefa } from '../store/tarefa.actions';
 import { Tarefa } from '../tarefa.model';
+import { tarefasStore } from '../store/tarefa.store';
 
 @Component({
   selector: 'app-input-tarefa',
@@ -15,8 +13,7 @@ import { Tarefa } from '../tarefa.model';
 })
 export class InputTarefaComponent {
   newTask = '';
-
-  constructor(private store:Store<TarefaState>) { }
+  readonly storeTarefa = inject(tarefasStore);
 
   addTask() {
 
@@ -25,7 +22,7 @@ export class InputTarefaComponent {
       descricao: this.newTask,
     };
     
-    this.store.dispatch(adicionarTarefa({tarefa:newTarefa}));
+    this.storeTarefa.adicionarTarefa(newTarefa);
 
   }
 
