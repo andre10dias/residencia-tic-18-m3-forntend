@@ -5,7 +5,38 @@
   "projects": {
     "gerenciamentoTarefas": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "standalone": true,
+          "path": "src/app/component"
+        },
+        "@schematics/angular:directive": {
+          "standalone": true,
+          "path": "src/app/directive"
+        },
+        "@schematics/angular:pipe": {
+          "standalone": true,
+          "path": "src/app/pipe"
+        },
+        "@schematics/angular:service": {
+          "path": "src/app/service"
+        },
+        "@schematics/angular:guard": {
+          "path": "src/app/guard"
+        },
+        "@schematics/angular:interceptor": {
+          "path": "src/app/interceptor"
+        },
+        "@schematics/angular:class": {
+          "path": "src/app/model"
+        },
+        "@schematics/angular:interface": {
+          "path": "src/app/model"
+        },
+        "@schematics/angular:enum": {
+          "path": "src/app/enum"
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -56,6 +87,9 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "open": true
+          },
           "configurations": {
             "production": {
               "buildTarget": "gerenciamentoTarefas:build:production"
