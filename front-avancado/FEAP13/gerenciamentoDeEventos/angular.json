@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "gerenciamentoTarefas": {
+    "gerenciamentoDeEventos": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -92,10 +92,10 @@
           },
           "configurations": {
             "production": {
-              "buildTarget": "gerenciamentoTarefas:build:production"
+              "buildTarget": "gerenciamentoDeEventos:build:production"
             },
             "development": {
-              "buildTarget": "gerenciamentoTarefas:build:development"
+              "buildTarget": "gerenciamentoDeEventos:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -103,7 +103,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "gerenciamentoTarefas:build"
+            "buildTarget": "gerenciamentoDeEventos:build"
           }
         },
         "test": {

@@ -20,6 +20,6 @@ import {MatMenuModule} from '@angular/material/menu';
   styleUrl: './toolbar.component.css'
 })
 export class ToolbarComponent {
-  title = 'Gerenciamento de Tarefas';
+  title = 'Gerenciamento de Eventos';
 
 }
