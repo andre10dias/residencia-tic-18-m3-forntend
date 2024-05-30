@@ -1,0 +1,29 @@
+#list-eventos {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 60px 446px;
+    padding: 10px;
+}
+
+.header {
+    display: flex;
+    grid-row-start: 1;
+    grid-row-end: 2;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* .btn-cadastrar {
+    text-align: right;
+} */
+
+/* button {
+    margin-bottom: 10px;
+    color: #ffff !important;
+    background-color: #3f51b5;
+    height: 40px;
+} */
+
+.button-container {
+    margin-left: auto;
+}

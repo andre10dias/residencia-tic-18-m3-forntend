@@ -21,7 +21,7 @@ a {
 
 .footer {
     grid-row-start: 3;
-    color: white;
+    color: #ffff;
     text-align: center;
     padding-bottom: 20px;
     width: 100%;
@@ -38,7 +38,7 @@ a {
         grid-template-rows: 60px 1fr 60px;
     }
 
-    .footer {
+    /* .footer {
         color: white;
         text-align: center;
         padding-bottom: 20px;
@@ -47,5 +47,5 @@ a {
         bottom: 0; 
         left: 0;
         height: 116px;
-    }
+    } */
 }

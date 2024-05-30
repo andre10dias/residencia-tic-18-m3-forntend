@@ -1,0 +1,86 @@
+<div class="dialog-header">
+    <div class="dialog-close">
+      <button mat-button mat-dialog-close>X</button>
+    </div>
+    <div class="dialog-title">
+      <h2>{{title}}</h2>
+    </div>
+  </div>
+  <div class="dialog-conteiner">
+      <mat-dialog-content>
+        <form [formGroup]="eventoForm" #eventoFormRef="ngForm" (ngSubmit)="onSubmit()">
+            <input type="hidden" name="id" formControlName="id">
+            <input type="hidden" name="codigo" formControlName="codigo">
+        
+            <div class="row-1">
+                <div class="form-group">
+                    <mat-label>Nome</mat-label>
+                    <div id="nome-evento">
+                        <input matInput formControlName="nome"
+                            [ngClass]="{'invalid-field': eventoForm.get('nome')?.invalid && eventoForm.get('nome')?.touched}"
+                        >
+                        <div>
+                            <mat-error *ngIf="!eventoForm.get('nome')?.valid 
+                                && eventoForm.get('nome')?.touched && eventoForm.get('nome')?.hasError('required')"
+                            >Campo obrigatório.</mat-error>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row-2">
+                <div class="form-group">
+                    <mat-label>Data</mat-label>
+                    <div id="data-evento">
+                        <input matInput type="date" formControlName="data"
+                            [ngClass]="{'invalid-field': eventoForm.get('data')?.invalid && eventoForm.get('data')?.touched}"
+                        >
+                        <div>
+                            <mat-error *ngIf="!eventoForm.get('data')?.valid && eventoForm.get('data')?.touched 
+                                && eventoForm.get('data')?.hasError('required')"
+                            >Campo obrigatório.</mat-error>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <mat-label>Horário</mat-label>
+                    <div id="horario-evento">
+                        <input id="timeInput" matInput formControlName="horario" placeholder="HH:mm" maxlength="5" (blur)="formatarHorario($event)"
+                            [ngClass]="{'invalid-field': eventoForm.get('horario')?.invalid && eventoForm.get('horario')?.touched}"
+                        >
+                        <div>
+                            <mat-error *ngIf="!eventoForm.get('horario')?.valid && eventoForm.get('horario')?.touched"
+                            >Campo obrigatório.</mat-error>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row-3">
+                <div class="form-group">
+                    <mat-label>Local</mat-label>
+                    <div id="local-evento">
+                        <input matInput formControlName="local"
+                            [ngClass]="{'invalid-field': eventoForm.get('local')?.invalid && eventoForm.get('local')?.touched}"
+                        >
+                        <div>
+                            <mat-error *ngIf="!eventoForm.get('local')?.valid 
+                                && eventoForm.get('local')?.touched && eventoForm.get('local')?.hasError('required')"
+                            >Campo obrigatório.</mat-error>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        
+      </mat-dialog-content>
+      <hr>
+      <mat-dialog-actions>
+        <button type="submit" mat-button color="primary"
+            (click)="eventoFormRef.ngSubmit.emit()" [mat-dialog-close]="eventoForm.valid"  
+        >{{btnText}}</button>
+
+        <button mat-button [mat-dialog-close]="false">Cancelar</button>
+      </mat-dialog-actions>
+</div>

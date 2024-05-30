@@ -5,6 +5,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatMenuModule} from '@angular/material/menu';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-toolbar',
@@ -20,6 +21,17 @@ import {MatMenuModule} from '@angular/material/menu';
   styleUrl: './toolbar.component.css'
 })
 export class ToolbarComponent {
+
   title = 'Gerenciamento de Eventos';
+
+  constructor(private route: Router) { }
+
+  rotaEventos() {
+    this.route.navigate(['/eventos']);
+  }
+
+  rotaDashboard() {
+    this.route.navigate(['/dashboard']);
+  }
 
 }

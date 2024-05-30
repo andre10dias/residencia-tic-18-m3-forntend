@@ -4,10 +4,14 @@
     </button>
     <span>{{title}}</span>
     <mat-menu #menu="matMenu">
-        <button mat-menu-item>
+        <button mat-menu-item (click)="rotaDashboard()">
+          <mat-icon>dashboard</mat-icon>
+          <span>Dashboard</span>
+        </button>
+        <button mat-menu-item (click)="rotaEventos()">
           <!-- <mat-icon>add_task</mat-icon> -->
-          <mat-icon>event_available</mat-icon>
-          <span>Criar eventos</span>
+          <mat-icon>event</mat-icon>
+          <span>Eventos</span>
         </button>
         <!-- <button mat-menu-item disabled>
           <mat-icon>voicemail</mat-icon>

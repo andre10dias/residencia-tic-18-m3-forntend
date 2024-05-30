@@ -1,1 +1,14 @@
-<p>eventos works!</p>
+<div id="list-eventos">
+    <div class="header">
+      <h2>Lista de eventos</h2>
+      <div class="button-container">
+        <button mat-fab extended color="primary" (click)="openDialog()">
+            <mat-icon>event_available</mat-icon>
+            Cadastrar evento
+        </button>
+      </div>
+    </div>
+    <div class="content">
+        <app-evento-list></app-evento-list>
+    </div>
+</div>
