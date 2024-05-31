@@ -47,7 +47,7 @@ export class EventoFormComponent {
   @ViewChild('eventoFormRef') eventoFormRef: any;
   eventoForm: FormGroup;
 
-  novoEvento = '';
+  novoEvento: string = '';
   readonly storeEvento = inject(eventosStore);
 
   title = 'Cadastrar evento';
@@ -71,10 +71,12 @@ export class EventoFormComponent {
         Validators.required
       ]),
       'data': new FormControl(null, [
-        Validators.required
+        Validators.required,
+        this.dataValidators
       ]),
       'horario': new FormControl(null, [
-        Validators.required
+        Validators.required,
+        this.horarioValidators
       ]),
       'local': new FormControl(null, [
         Validators.required
@@ -88,29 +90,84 @@ export class EventoFormComponent {
     }
   }
 
+  dataValidators(control: FormControl): { [key: string]: boolean } | null {
+    const dataAtual = new Date();
+    const inputDate = new Date(control.value);
+
+    if (inputDate <= dataAtual) {
+      return { 'dataInvalida': true };
+    }
+
+    return null;
+  }
+
+  //Função de fábrica que retorna uma função de validação, preservando o contexto this.
+  horarioValidators() {
+    return (control: FormControl): { [key: string]: boolean } | null => {
+      const timePattern = /^([01]\d|2[0-3]):([0-5]\d)$/;
+
+      if (control.value !== null) {
+        control.setValue(this.retornarHorarioFormatado(control.value));
+
+        if (control.value !== '' && !timePattern.test(control.value)) {
+          return { 'horarioInvalido': true };
+        }
+      }
+
+      return null;
+    };
+  }
+
   formatarHorario(event: Event): void {
     const input = event.target as HTMLInputElement;
-    let valor = input.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+    input.value = this.retornarHorarioFormatado(input.value);
+    // let valor = input.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+
+    // if (valor.length === 4) {
+    //   const horas = valor.substring(0, 2);
+    //   const minutos = valor.substring(2, 4);
+    //   input.value = `${horas}:${minutos}`;
+    // } 
+    // else if (valor.length === 3) {
+    //   const horas = valor.charAt(0);
+    //   const minutos = valor.substring(1, 3);
+    //   input.value = `0${horas}:${minutos}`;
+    // } 
+    // else if (valor.length === 2) {
+    //   input.value = `${valor}:00`;
+    // } 
+    // else if (valor.length === 1) {
+    //   input.value = `0${valor}:00`;
+    // } 
+    // else {
+    //   input.value = '';
+    // }
+  }
+
+  retornarHorarioFormatado(horario: string = '00:00'): string {
+    let valor = horario.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
 
     if (valor.length === 4) {
       const horas = valor.substring(0, 2);
       const minutos = valor.substring(2, 4);
-      input.value = `${horas}:${minutos}`;
+      horario = `${horas}:${minutos}`;
     } 
     else if (valor.length === 3) {
       const horas = valor.charAt(0);
       const minutos = valor.substring(1, 3);
-      input.value = `0${horas}:${minutos}`;
+      horario = `0${horas}:${minutos}`;
     } 
     else if (valor.length === 2) {
-      input.value = `${valor}:00`;
+      horario = `${valor}:00`;
     } 
     else if (valor.length === 1) {
-      input.value = `0${valor}:00`;
+      horario = `0${valor}:00`;
     } 
     else {
-      input.value = '';
+      horario = '';
     }
+
+    return horario;
   }
 
   onSubmit(): void {
@@ -119,21 +176,18 @@ export class EventoFormComponent {
 
       const evento: Evento = {
         id: form.id,
-        codigo: this.gerarCodigo(),
+        codigo: form.codigo,
         nome: form.nome,
         data: form.data,
         horario: form.horario,
         local: form.local
       }
 
-      console.log(evento);
-      console.log(this.action);
-
       if (ActionEnum.CREATE === this.action) {
+        evento.codigo = this.gerarCodigo();
         this.storeEvento.adicionarEvento(evento);
       }
       else {
-        console.log('atualizar');
         this.storeEvento.atualizarEvento(evento);
       }
     }

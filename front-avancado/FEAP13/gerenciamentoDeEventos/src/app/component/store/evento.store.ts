@@ -27,19 +27,14 @@ export const eventosStore = signalStore(
                 patchState(store, { eventos: store.eventos().filter(evento => evento.codigo !== codigo) });
             },
             atualizarEvento(eventoUpdate: Evento) {
-                const { nome, data, horario, local, codigo } = eventoUpdate;
-                const eventoIndex = store.eventos().findIndex(evento => evento.codigo === codigo);
-
-                // console.log('evento update: ', eventoUpdate);
-                // console.log('index: ', eventoIndex);
-                // console.log('eventos: ', store.eventos());
+                const eventoIndex = store.eventos().findIndex(evento => evento.codigo === eventoUpdate.codigo);
                 
                 if (eventoIndex !== -1) {
                     const novosEventos = [...store.eventos()];
-                    novosEventos[eventoIndex].nome = nome;
-                    novosEventos[eventoIndex].data = data;
-                    novosEventos[eventoIndex].horario = horario;
-                    novosEventos[eventoIndex].local = local;
+                    novosEventos[eventoIndex].nome = eventoUpdate.nome;
+                    novosEventos[eventoIndex].data = eventoUpdate.data;
+                    novosEventos[eventoIndex].horario = eventoUpdate.horario;
+                    novosEventos[eventoIndex].local = eventoUpdate.local;
                     patchState(store, { eventos: novosEventos });
                 }
             },

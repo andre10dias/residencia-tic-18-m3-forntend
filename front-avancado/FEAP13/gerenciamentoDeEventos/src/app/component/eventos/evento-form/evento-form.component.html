@@ -39,6 +39,9 @@
                             <mat-error *ngIf="!eventoForm.get('data')?.valid && eventoForm.get('data')?.touched 
                                 && eventoForm.get('data')?.hasError('required')"
                             >Campo obrigatório.</mat-error>
+                            <mat-error *ngIf="!eventoForm.get('data')?.valid 
+                                && eventoForm.get('data')?.touched && eventoForm.get('data')?.hasError('dataInvalida')"
+                            >A data do evento não deve ser menor que a atual.</mat-error>
                         </div>
                     </div>
                 </div>
@@ -50,8 +53,12 @@
                             [ngClass]="{'invalid-field': eventoForm.get('horario')?.invalid && eventoForm.get('horario')?.touched}"
                         >
                         <div>
-                            <mat-error *ngIf="!eventoForm.get('horario')?.valid && eventoForm.get('horario')?.touched"
+                            <mat-error *ngIf="!eventoForm.get('horario')?.valid && eventoForm.get('horario')?.touched 
+                                && eventoForm.get('horario')?.hasError('required')"
                             >Campo obrigatório.</mat-error>
+                            <mat-error *ngIf="!eventoForm.get('horario')?.valid 
+                                && eventoForm.get('horario')?.touched && eventoForm.get('horario')?.hasError('horarioInvalido')"
+                            >Horário inválido.</mat-error>
                         </div>
                     </div>
                 </div>
