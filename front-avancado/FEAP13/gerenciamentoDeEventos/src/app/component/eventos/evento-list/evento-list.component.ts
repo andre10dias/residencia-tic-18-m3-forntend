@@ -28,6 +28,7 @@ import {
 } from '@angular/material/dialog';
 import { EventoFormComponent } from '../evento-form/evento-form.component';
 import { ActionEnum } from '../../../enum/action.enum';
+import { EventoService } from '../../../service/evento.service';
 
 @Component({
   selector: 'app-evento-list',
@@ -67,6 +68,7 @@ export class EventoListComponent implements OnInit {
   readonly storeEvento = inject(eventosStore);
 
   constructor(
+    private service: EventoService,
     public dialog: MatDialog,
     private _snackBar: MatSnackBar
   ) {}
@@ -76,13 +78,16 @@ export class EventoListComponent implements OnInit {
   }
 
   carregarEventos() {
-    /**
-     * Carregar eventos do banco
-     */
-
-    // console.log(this.storeEvento.eventos());
-    // this.dataSource.data = this.storeEvento.eventos();
-    // this.dataSource._updateChangeSubscription();
+    this.service.getAll().subscribe({
+      next: listaEventos => {
+        listaEventos.forEach(evento => {
+          this.storeEvento.adicionarEvento(evento);
+        });
+      },
+      error: error => {
+        console.error('Erro ao carregar a lista:', error);
+      }
+    });
   }
 
   // carregarEventos() {

@@ -1,16 +1,13 @@
-import { Evento } from "../../model/evento";
 import { patchState, signalStore, withMethods, withState } from "@ngrx/signals";
+
+import { Evento } from "../../model/evento";
 
 export interface EventoState {
     eventos: Evento[];
 }
 
 export const estadoInicial: EventoState = {
-    eventos: [],
-    // eventos: [
-    //     { id: '1', descricao: 'Aprender Angular com a residencia TIC18 do CEPEDI' },
-    //     { id: '2', descricao: 'Aprender NgRx com a residencia TIC18 do CEPEDI'},
-    //     { id: '3', descricao: 'Modificando de NgRx/Store para NgRx/Signals'},]
+    eventos: []
 };
 
 export const eventosStore = signalStore(

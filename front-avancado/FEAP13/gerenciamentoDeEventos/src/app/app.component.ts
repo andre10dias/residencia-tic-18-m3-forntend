@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { NgModule } from '@angular/core';
 
+import { DashboardComponent } from './component/dashboard/dashboard.component';
 import { ToolbarComponent } from './component/toolbar/toolbar.component';
 import { FooterComponent } from './component/footer/footer.component';
 
@@ -12,6 +12,7 @@ import { FooterComponent } from './component/footer/footer.component';
     RouterOutlet, 
     ToolbarComponent,
     FooterComponent,
+    DashboardComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'

@@ -27,6 +27,7 @@ import {
 import {MatDialogModule, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { Evento } from '../../../model/evento';
+import { EventoService } from '../../../service/evento.service';
 
 @Component({
   selector: 'app-evento-form',
@@ -56,6 +57,7 @@ export class EventoFormComponent {
   eventoSelecionado: Evento = {} as Evento;
 
   constructor(
+    private service: EventoService,
     public dialogRef: MatDialogRef<EventoFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
@@ -121,27 +123,6 @@ export class EventoFormComponent {
   formatarHorario(event: Event): void {
     const input = event.target as HTMLInputElement;
     input.value = this.retornarHorarioFormatado(input.value);
-    // let valor = input.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
-
-    // if (valor.length === 4) {
-    //   const horas = valor.substring(0, 2);
-    //   const minutos = valor.substring(2, 4);
-    //   input.value = `${horas}:${minutos}`;
-    // } 
-    // else if (valor.length === 3) {
-    //   const horas = valor.charAt(0);
-    //   const minutos = valor.substring(1, 3);
-    //   input.value = `0${horas}:${minutos}`;
-    // } 
-    // else if (valor.length === 2) {
-    //   input.value = `${valor}:00`;
-    // } 
-    // else if (valor.length === 1) {
-    //   input.value = `0${valor}:00`;
-    // } 
-    // else {
-    //   input.value = '';
-    // }
   }
 
   retornarHorarioFormatado(horario: string = '00:00'): string {
@@ -185,7 +166,8 @@ export class EventoFormComponent {
 
       if (ActionEnum.CREATE === this.action) {
         evento.codigo = this.gerarCodigo();
-        this.storeEvento.adicionarEvento(evento);
+        // this.storeEvento.adicionarEvento(evento);
+        this.service.save(evento);
       }
       else {
         this.storeEvento.atualizarEvento(evento);

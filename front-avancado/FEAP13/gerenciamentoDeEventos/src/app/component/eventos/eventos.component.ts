@@ -27,7 +27,8 @@ export class EventosComponent {
 
   constructor(
     public dialog: MatDialog
-  ) {}
+  ) {
+  }
 
   openDialog(element?: any): void {
     const dialogRef = this.dialog.open(EventoFormComponent, {
