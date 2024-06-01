@@ -1,11 +1,10 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { eventosStore } from '../../store/evento.store';
 import { Evento } from '../../../model/evento';
 
 import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
@@ -60,7 +59,7 @@ import { DialogComponent } from '../../dialog/dialog.component';
   templateUrl: './evento-list.component.html',
   styleUrl: './evento-list.component.css'
 })
-export class EventoListComponent implements OnInit {
+export class EventoListComponent {
   displayedColumns: string[] = ['nome', 'data', 'horario', 'local', 'action'];
 
   title: string = 'Excluir evento';
@@ -74,23 +73,6 @@ export class EventoListComponent implements OnInit {
     private _snackBar: MatSnackBar,
     public dialog: MatDialog,
   ) {}
-
-  ngOnInit(): void {
-    this.carregarEventos();
-  }
-
-  carregarEventos() {
-    this.service.getAll().subscribe({
-      next: listaEventos => {
-        listaEventos.forEach(evento => {
-          this.storeEvento.adicionarEvento(evento);
-        });
-      },
-      error: error => {
-        console.error('Erro ao carregar a lista:', error);
-      }
-    });
-  }
 
   atualizarEvento(evento: Evento) {
     this.eventoSelecionado = { ...evento };
