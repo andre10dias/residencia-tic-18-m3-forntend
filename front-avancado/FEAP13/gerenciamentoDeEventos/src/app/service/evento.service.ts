@@ -46,5 +46,31 @@ export class EventoService {
       }
     });
   }
+
+  update(evento: Evento): void {
+    this.http.put(`${this.baseUrl}/${evento.id}.json`, evento).subscribe({
+      next: (data: any) => {
+        this.storeEvento.atualizarEvento(evento);
+      },
+      error: (error: any) => {
+        console.log('error: ', error)
+      }
+    });
+  }
+
+  delete(id: string): void {
+    try {
+      this.http.delete(`${this.baseUrl}/${id}.json`).subscribe({
+        next: (data: any) => {
+          this.storeEvento.removerEvento(id);
+        },
+        error: (error: any) => {
+          console.log('error: ', error)
+        }
+      });
+    } catch (error) {
+      console.error('Erro ao excluir evento:', error);
+    }
+  }
   
 }

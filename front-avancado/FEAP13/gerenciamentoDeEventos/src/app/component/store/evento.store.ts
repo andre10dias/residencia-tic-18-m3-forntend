@@ -20,11 +20,11 @@ export const eventosStore = signalStore(
             adicionarEvento(evento: Evento) {
                 patchState(store, { eventos: [...store.eventos(), evento] });
             },
-            removerEvento(codigo: string) {
-                patchState(store, { eventos: store.eventos().filter(evento => evento.codigo !== codigo) });
+            removerEvento(id: string) {
+                patchState(store, { eventos: store.eventos().filter(evento => evento.id !== id) });
             },
             atualizarEvento(eventoUpdate: Evento) {
-                const eventoIndex = store.eventos().findIndex(evento => evento.codigo === eventoUpdate.codigo);
+                const eventoIndex = store.eventos().findIndex(evento => evento.id === eventoUpdate.id);
                 
                 if (eventoIndex !== -1) {
                     const novosEventos = [...store.eventos()];

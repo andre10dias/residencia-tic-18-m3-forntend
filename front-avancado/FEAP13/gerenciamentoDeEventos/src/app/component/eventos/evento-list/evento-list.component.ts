@@ -29,6 +29,7 @@ import {
 import { EventoFormComponent } from '../evento-form/evento-form.component';
 import { ActionEnum } from '../../../enum/action.enum';
 import { EventoService } from '../../../service/evento.service';
+import { DialogComponent } from '../../dialog/dialog.component';
 
 @Component({
   selector: 'app-evento-list',
@@ -59,10 +60,7 @@ import { EventoService } from '../../../service/evento.service';
 export class EventoListComponent implements OnInit {
   displayedColumns: string[] = ['nome', 'data', 'horario', 'local', 'action'];
 
-  dataSource = new MatTableDataSource<Evento>();
-
   title: string = 'Excluir evento';
-  removeTemplate: string = '<div>Tem certeza que deseja remover?</div>';
 
   eventoSelecionado: Evento = {} as Evento;
   readonly storeEvento = inject(eventosStore);
@@ -90,19 +88,17 @@ export class EventoListComponent implements OnInit {
     });
   }
 
-  // carregarEventos() {
-  //   this.storeEvento.eventos().subscribe(eventos => {
-  //     this.dataSource.data = eventos;
-  //   });
-  // }
-
   atualizarEvento(evento: Evento) {
     this.eventoSelecionado = { ...evento };
     this.openDialog(this.eventoSelecionado);
   }
 
-  removerEvento(evento: Evento) {
-    this.storeEvento.removerEvento(evento.codigo);
+  async removerEvento(id: string): Promise<void> {
+    const index = this.storeEvento.eventos().findIndex(item => item.id === id);
+
+    if (index !== -1) {
+      this.service.delete(id);
+    }
   }
 
   openDialog(element?: Evento): void {
@@ -121,6 +117,24 @@ export class EventoListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         console.log('The edit dialog was closed');
+      }
+    });
+  }
+
+  openConfirmDialog(
+    element?: any, 
+    template: string = `<div>Deseja realmente remover o evento ${element.nome}?</div>`, 
+    title: string = this.title
+  ): void {
+    const dialogRef = this.dialog.open(DialogComponent, {
+      width: '600px',
+      disableClose: true,
+      data: {title, template, element}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.removerEvento(element.id);
       }
     });
   }

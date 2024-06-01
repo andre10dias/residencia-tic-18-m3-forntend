@@ -157,7 +157,6 @@ export class EventoFormComponent {
 
       const evento: Evento = {
         id: form.id,
-        codigo: form.codigo,
         nome: form.nome,
         data: form.data,
         horario: form.horario,
@@ -165,19 +164,20 @@ export class EventoFormComponent {
       }
 
       if (ActionEnum.CREATE === this.action) {
-        evento.codigo = this.gerarCodigo();
+        // evento.codigo = this.gerarCodigo();
         // this.storeEvento.adicionarEvento(evento);
         this.service.save(evento);
       }
       else {
-        this.storeEvento.atualizarEvento(evento);
+        // this.storeEvento.atualizarEvento(evento);
+        this.service.update(evento);
       }
     }
 
   }
 
-  gerarCodigo() {
-    return Date.now().toString(36) + Math.random().toString(36).substring(2);
-  }
+  // gerarCodigo() {
+  //   return Date.now().toString(36) + Math.random().toString(36).substring(2);
+  // }
 
 }
