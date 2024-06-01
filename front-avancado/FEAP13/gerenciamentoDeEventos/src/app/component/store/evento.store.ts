@@ -8,6 +8,29 @@ export interface EventoState {
 
 export const estadoInicial: EventoState = {
     eventos: []
+    // eventos: [
+    //     {
+    //         id: '1',
+    //         nome: 'Evento 1',
+    //         data: '2022-01-01',
+    //         horario: '09:00',
+    //         local: 'Local 1'
+    //     },
+    //     {
+    //         id: '2',
+    //         nome: 'Evento 2',
+    //         data: '2022-01-02',
+    //         horario: '10:00',
+    //         local: 'Local 2'
+    //     },
+    //     {
+    //         id: '3',
+    //         nome: 'Evento 3',
+    //         data: '2022-01-03',
+    //         horario: '11:00',
+    //         local: 'Local 3'
+    //     }
+    // ]
 };
 
 export const eventosStore = signalStore(

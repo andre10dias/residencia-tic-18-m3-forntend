@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 
 import { eventosStore } from '../../store/evento.store';
@@ -54,6 +54,9 @@ import { DialogComponent } from '../../dialog/dialog.component';
     MatDialogActions,
     MatDialogClose,
   ],
+  providers: [
+    DatePipe,
+  ],
   templateUrl: './evento-list.component.html',
   styleUrl: './evento-list.component.css'
 })
@@ -67,8 +70,9 @@ export class EventoListComponent implements OnInit {
 
   constructor(
     private service: EventoService,
+    private datePipe: DatePipe,
+    private _snackBar: MatSnackBar,
     public dialog: MatDialog,
-    private _snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -98,6 +102,14 @@ export class EventoListComponent implements OnInit {
 
     if (index !== -1) {
       this.service.delete(id);
+    }
+  }
+
+  formatarData(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const formattedDate = this.datePipe.transform(input.value, 'dd/MM/yyyy');
+    if (formattedDate) {
+      input.value = formattedDate;
     }
   }
 
@@ -138,32 +150,5 @@ export class EventoListComponent implements OnInit {
       }
     });
   }
-
-  // showForm(evento: Evento) {
-  //   this.eventoSelecionada = { ...evento };
-
-  //   const formUpdate = document.getElementById('form-update');
-  //   if (formUpdate) {
-  //     formUpdate.style.display = 'block';
-  //   }
-  // }
-
-  // atualizarEvento() {
-  //   if (evento) {
-      
-  //   }
-  //   const novaDescricao = (document.getElementById('nova-descricao') as HTMLInputElement).value;
-  //   // atualizarEvento(id: string, nome: string, data: string, horario: string, local: string) {
-  //   this.storeEvento.atualizarEvento(this.eventoSelecionado.id, novaDescricao);
-  //   // this.hideForm();
-  // }
-
-  // hideForm() {
-  //   const formUpdate = document.getElementById('form-update');
-
-  //   if (formUpdate) {
-  //     formUpdate.style.display = 'none';
-  //   }
-  // }
 
 }

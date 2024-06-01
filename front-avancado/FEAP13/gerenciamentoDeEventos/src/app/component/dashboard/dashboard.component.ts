@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { eventosStore } from '../store/evento.store';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,6 +13,11 @@ import { Component } from '@angular/core';
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
+  readonly storeEvento = inject(eventosStore);
+  
+  ngOnInit(): void {
+    this.storeEvento.eventos();
+  }
 
 }

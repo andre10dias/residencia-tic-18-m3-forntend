@@ -1,0 +1,21 @@
+<div class="dashboard">
+    <!-- <h1>Welcome, {{ currentUser.username }}!</h1> -->
+    <h2>Seus eventos</h2>
+    <!-- <div *ngIf="events$ | async as events; else loading"> -->
+    <div *ngIf="storeEvento.eventos().length > 0; else noEvents">
+      <div>
+        <ul>
+          <li *ngFor="let evento of storeEvento.eventos()">
+            <h3>{{ evento.nome }}</h3>
+            <p>{{ evento.data | date }}</p>
+            <p>{{ evento.local }}</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <ng-template #noEvents>
+        <p>Você não possui eventos cadastrados.</p>
+    </ng-template>
+  </div>
+  
