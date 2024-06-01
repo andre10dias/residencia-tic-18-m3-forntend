@@ -1,5 +1,7 @@
 <div class="container">
-    <app-toolbar></app-toolbar>
+    <div *ngIf="!hideToolbar">
+        <app-toolbar></app-toolbar>
+    </div>
     <div class="content">
         <router-outlet></router-outlet>
     </div>

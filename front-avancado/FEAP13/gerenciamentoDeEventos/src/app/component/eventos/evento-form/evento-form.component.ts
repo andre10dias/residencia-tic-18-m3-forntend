@@ -7,8 +7,8 @@ import { ActionEnum } from '../../../enum/action.enum';
 import { eventosStore } from '../../store/evento.store';
 
 import {MatInputModule} from '@angular/material/input';
-import {MatDialogModule, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatDialogModule, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import { Evento } from '../../../model/evento';
 import { EventoService } from '../../../service/evento.service';
 

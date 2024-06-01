@@ -6,6 +6,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatMenuModule} from '@angular/material/menu';
 import { Router } from '@angular/router';
+import { AuthService } from '../../service/auth.service';
 
 @Component({
   selector: 'app-toolbar',
@@ -24,7 +25,10 @@ export class ToolbarComponent {
 
   title = 'Gerenciamento de Eventos';
 
-  constructor(private route: Router) { }
+  constructor(
+    private route: Router,
+    private service: AuthService
+  ) { }
 
   rotaEventos() {
     this.route.navigate(['/eventos']);
@@ -32,6 +36,12 @@ export class ToolbarComponent {
 
   rotaDashboard() {
     this.route.navigate(['/dashboard']);
+  }
+
+  sair() {
+    localStorage.clear();
+    this.service.logout();
+    this.route.navigate(['/login']);
   }
 
 }
